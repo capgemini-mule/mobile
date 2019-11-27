@@ -15,16 +15,18 @@ export class LoginPage implements OnInit {
 
   login(){
     console.log("Acessando login");
-    this.navCtrl.navigateRoot('/tabs/tab1');  
+    this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
-  cadatre_se(){
+  cadastre_se(){
     console.log("Cadastrar-se");
+    this.navCtrl.navigateForward('/cadastrar-usuario');
     
   }
 
   esqueci_senha(){
     console.log("Esqueci minha senha");
+    this.navCtrl.navigateForward('/esqueci-senha');
     
   }
 

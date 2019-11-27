@@ -14,4 +14,26 @@ import { Tab1Page } from './tab1.page';
   ],
   declarations: [Tab1Page]
 })
-export class Tab1PageModule {}
+export class Tab1PageModule {
+
+  input_search : any;
+
+  constructor(){
+
+    
+
+  }
+
+  setFilteredItems(value){
+
+    console.log("value", value)
+
+  }
+
+  ngOnInit() {
+    this.input_search = "sasahusha"
+    console.log("this.input_search", this.input_search)
+  }
+
+
+}
