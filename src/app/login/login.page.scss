@@ -1,0 +1,88 @@
+.texto_branco{
+    color: #FFFFFF;
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-size: 18px;
+    padding: 10px;
+}
+
+.pageLogin, :host, ion-list, ion-item {
+    --background: #2d59a8;
+    background: #2d59a8;
+    border:none;
+}
+
+ion-input{ 
+    --background: #FFFFFF;
+    background: #FFFFFF;    
+}
+
+.native-input{
+    --padding-end: 10px;
+    --padding-start: 10px;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;    
+}
+
+ion-item{
+    --inner-border-width: 0;    
+}
+
+.label-ios, .label-md{
+    margin:0px !important;
+}
+
+.item-inner{
+    border:none !important;
+}
+
+.bk_white{
+    // background:#FFFFFF;
+    float: left;
+    width: 100%;;
+}
+
+.logo_login img{ 
+    display:block;    
+    margin:5% auto 5%;
+}
+
+.end_login{
+    color: #2d59a8;
+    position:absolute;
+    bottom: 0;
+    background: #FFFFFF;
+    padding: 10px;
+    text-align: center;
+    margin-left:-16px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.text-input-ios, .text-input-md{
+    margin:0px 0px 5px 0px;
+}
+
+.bt_login{
+    width: 100%;
+    background: #FFFFFF;
+    --background: #FFFFFF;
+    border-radius:5px;
+    display:block;
+    font-weight: bold;
+    text-align: center;
+    color: #2d59a8;
+    font-size: 18px;
+    padding:10px 0px;
+    height: auto;
+    --inner-border-width: 0; 
+    --box-shadow: 0;
+}
+
+.semge_logo{
+    margin-top:15px;
+}

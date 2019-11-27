@@ -1,0 +1,49 @@
+<ion-content class="pageLogin" padding>
+
+    <ion-list>
+        <ion-item class="logo_login" >
+            <img src="/assets/imgs/logo_prin.png"/>            
+        </ion-item>
+        
+        <ion-item>
+            <ion-input placeholder="E-mail" type="email"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+            <ion-input placeholder="Senha" type="password"></ion-input>
+        </ion-item>
+
+        <ion-item>
+                <ion-button expand="full" class="bt_login" (click)="login()">Entrar</ion-button>
+        </ion-item>
+
+        <ion-row class="texto_branco">
+            <ion-col (click)="esqueci_senha()">
+                Esqueci minha senha
+            </ion-col>
+        </ion-row>
+
+        <ion-row class="texto_branco">
+            <ion-col (click)="cadatre_se()">
+                Cadastrar-se
+            </ion-col>
+        </ion-row>
+    </ion-list> 
+
+        <ion-row class="end_login">
+            <ion-col>
+                Páginas Oficiais
+            </ion-col>
+        <ion-row class="bk_white">
+            <ion-col (click)="openLinkExterno('http://www.salvador.ba.gov.br/')">
+                <img src="/assets/imgs/logo_prefeitura_ssa.jpg" />
+            </ion-col>
+            <ion-col (click)="openLinkExterno('http://www.gestaopublica.salvador.ba.gov.br/')">
+                <img src="/assets/imgs/logo_semge.jpg" class="semge_logo"/>
+            </ion-col>
+        </ion-row>
+        </ion-row>
+    
+
+
+</ion-content>
