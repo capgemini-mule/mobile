@@ -3,6 +3,11 @@
     <ion-title>
       SEMGE
     </ion-title>
+
+    <ion-buttons slot="end" (click)="logoff()">
+        <ion-icon slot="icon-only" name="exit"></ion-icon>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -11,5 +16,34 @@
     <ion-card-header>
         <ion-card-title>Configurações</ion-card-title>
     </ion-card-header>
+
+    <ion-list lines="none">
+      
+        <ion-item href="./">
+          <ion-icon slot="start" color="medium" name="contact"></ion-icon>
+          <ion-label>Meu Perfil</ion-label>
+        </ion-item>
+
+        <ion-item href="./">
+          <ion-icon slot="start" color="medium" name="key"></ion-icon>
+          <ion-label>Alterar Senha</ion-label>
+        </ion-item>
+
+        <ion-item href="./">
+          <ion-icon slot="start" color="medium" name="help-circle"></ion-icon>
+          <ion-label>Ajuda</ion-label>
+        </ion-item>
+
+        <ion-item href="./">
+          <ion-icon slot="start" color="medium" name="lock"></ion-icon>
+          <ion-label>Privacidade</ion-label>
+        </ion-item>
+
+        <ion-item href="./">
+          <ion-icon slot="start" color="medium" name="information-circle"></ion-icon>
+          <ion-label>Sobre o APP</ion-label>
+        </ion-item>
+  
+      </ion-list>
 
 </ion-content>

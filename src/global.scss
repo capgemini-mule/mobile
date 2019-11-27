@@ -34,7 +34,21 @@ ion-header ion-toolbar:first-child{
     text-align: center;
 }
 
-ion-header ion-toolbar ion-icon{
+ion-tab-bar{
+    --background: #f2f2f2 !important;
+    background: #f2f2f2 !important;
+}
+
+ion-tab-bar ion-icon, ion-tab-bar ion-label{
+    color: #666666 !important;    
+}
+
+ion-tab-bar .tab-selected ion-icon, ion-tab-bar .tab-selected ion-label{
+    color: #2d59a8 !important;
+    font-weight: bold;
+}
+
+ion-header ion-toolbar ion-icon, ion-header ion-toolbar iion-label{
     color: #FFFFFF !important;    
 }
 
@@ -46,6 +60,15 @@ ion-header ion-toolbar ion-buttons{
     margin:10px;
 }
 
-ion-label, ion-icon{
-    color: #2d59a8 ;
+ion-card-header{
+    background: #f2f2f2;
+}
+
+ion-card-title{
+    color: #666666 !important;
+    font-weight: bold;
+}
+
+ion-content ion-icon{
+    --ion-color-medium:#2d59a8;    
 }

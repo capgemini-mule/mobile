@@ -31,7 +31,7 @@
         <ion-card-title>Menu</ion-card-title>
     </ion-card-header>
 
-    <ion-list lines="none">
+    <ion-list lines="none" *ngIf="not_found==false">
       
       <ion-item *ngFor="let servico of lista_servicos"  href="{{servico.acao}}">
         <ion-icon slot="start" color="medium" name="{{servico.icon}}"></ion-icon>
@@ -39,4 +39,32 @@
       </ion-item>
 
     </ion-list>
+    <ion-list lines="none" *ngIf="not_found==true">
+        <ion-card>
+            <ion-card-content>
+                Serviço não encontrado.
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+
+
+    <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button>
+            <ion-icon name="share"></ion-icon>
+        </ion-fab-button>
+      
+        <ion-fab-list side="top">
+          <ion-fab-button>
+              <ion-icon name="logo-facebook"></ion-icon>              
+          </ion-fab-button>
+          <ion-fab-button>
+              <ion-icon name="logo-twitter"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button>
+              <ion-icon name="logo-youtube"></ion-icon>
+          </ion-fab-button>
+        </ion-fab-list>
+              
+      
+      </ion-fab>
 </ion-content>

@@ -9,31 +9,52 @@ import { LoadingController, AlertController, NavController } from '@ionic/angula
 export class Tab1Page {
 
   input_search: any = false;
+  not_found: any = false;
 
   lista_servicos: any = [];
+  lista_servicos_completa: any = [
+    {icon: "ribbon", label: "Certificado Digital", acao:"./"},
+    {icon: "car", label: "Veículos e Condutores", acao:"./"},
+    {icon: "person", label: "Emissão de Carteira de Identidade", acao:"./"},
+    {icon: "book", label: "Educação", acao:"./"},
+    {icon: "medkit", label: "Saúde", acao:"./"},
+    {icon: "unlock", label: "Segurança", acao:"./"},
+    {icon: "bus", label: "Rodovias e Transportes", acao:"./"}
+  ]
 
   constructor(public navCtrl: NavController, public alertController: AlertController) {
 
   }
 
   ngOnInit(){
-    this.lista_servicos = [
-      {icon: "ribbon", label: "Certificado Digital", acao:"#"},
-      {icon: "car", label: "Veículos e Condutores", acao:"#"},
-      {icon: "person", label: "Emissão de Carteira de Identidade", acao:"#"},
-      {icon: "book", label: "Educação", acao:"#"},
-      {icon: "medkit", label: "Saúde", acao:"#"},
-      {icon: "unlock", label: "Segurança", acao:"#"},
-      {icon: "bus", label: "Rodovias e Transportes", acao:"#"}
-    ]
+    this.lista_servicos = this.lista_servicos_completa;
   }
 
-  filtrarServicos(value){
-    console.log("setFilteredItems", value.target.value)
+  filtrarServicos(itemSearch){
+    
+    var retorno = this.lista_servicos_completa.filter(el => el.label.toLowerCase().indexOf(itemSearch.target.value.toLowerCase()) > -1 );
+    
+    if(retorno.length>0){
+      console.log("1")
+      this.not_found = false;
+      this.lista_servicos = retorno;
+    }else{
+      console.log("3")
+      this.notFound();
+    }
+
+    console.log("s",itemSearch.target.value)
+    
+    
+  }
+
+  notFound(){
+    this.not_found = true;
   }
 
   ocultarSearch(){
     this.input_search = false;
+    this.ngOnInit();
   }
 
   openSearch(){

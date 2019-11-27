@@ -1,10 +1,15 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
+    <ion-toolbar>
+      <ion-title>
         SEMGE
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+      </ion-title>
+  
+      <ion-buttons slot="end" (click)="logoff()">
+          <ion-icon slot="icon-only" name="exit"></ion-icon>
+      </ion-buttons>     
+  
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
 
@@ -12,5 +17,44 @@
         <ion-card-title>Favoritos</ion-card-title>
     </ion-card-header>
 
+    <ion-grid class="gridFavoritos">
+
+        <ion-row>
+          <ion-col>
+            <ion-icon name="calendar"></ion-icon>
+            <br />
+            Agendar Serviços
+          </ion-col>
+          <ion-col>
+            <ion-icon name="car"></ion-icon>
+            <br />
+            Situação do Veículo
+          </ion-col>
+          <ion-col>
+            <ion-icon name="calculator"></ion-icon>
+            <br />
+            Pontuação do Condutor
+          </ion-col>          
+        </ion-row>
+
+        <ion-row>
+            <ion-col>
+              <ion-icon name="barcode"></ion-icon>
+              <br />
+              Segunda Via de Conta
+            </ion-col>
+            <ion-col>
+              <ion-icon name="card"></ion-icon>
+              <br />
+              Consultar Débito
+            </ion-col>
+            <ion-col>
+              <ion-icon name="chatboxes"></ion-icon>
+              <br />
+              Fale com o Governo
+            </ion-col>          
+          </ion-row>
+
+    </ion-grid>
 
 </ion-content>

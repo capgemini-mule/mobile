@@ -1,5 +1,7 @@
 {
   "name": "SEMGEIonic_1",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

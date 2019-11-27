@@ -19,6 +19,10 @@ ion-input{
     --padding-end: 10px !important;
     --padding-start: 10px !important;    
     --inner-border-width: 0;    
+    --padding-top: 12px; 
+    --padding-bottom: 12px; 
+    margin-bottom: 5px;
+    border-radius: 3px;
 }
 
 ion-item{
@@ -67,13 +71,13 @@ ion-item{
     width: 100%;
     background: #FFFFFF;
     --background: #FFFFFF;
-    border-radius:5px;
+    border-radius: 3px;
     display:block;
     font-weight: bold;
     text-align: center;
     color: #2d59a8;
     font-size: 18px;
-    padding:10px 0px;
+    padding:12px 0px;
     height: auto;
     --inner-border-width: 0; 
     --box-shadow: 0;
