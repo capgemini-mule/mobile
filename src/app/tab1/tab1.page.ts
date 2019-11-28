@@ -64,7 +64,7 @@ export class Tab1Page {
   async logoff(){
 
     const alert = await this.alertController.create({
-      header: 'Logoff',
+      header: 'Sair',
       message: 'Tem certeza que deseja sair da sua conta?',
       buttons: [
         {
