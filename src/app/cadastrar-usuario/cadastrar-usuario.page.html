@@ -12,6 +12,45 @@
       <ion-card-header>
           <ion-card-title>Cadastrar-se</ion-card-title>
       </ion-card-header>
+
+      <ion-list padding>
+
+            <ion-item>
+                <ion-input [(ngModel)]="formCadastro.firstName" placeholder="Nome" type="text" required #firstName></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input [(ngModel)]="formCadastro.lastName" placeholder="Sobrenome" type="text" required #lastName></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input [(ngModel)]="formCadastro.username" placeholder="Usuário" type="text" required #username></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input [(ngModel)]="formCadastro.email" placeholder="E-mail" type="email" required #email></ion-input>
+            </ion-item>
+            
+            <ion-item>
+                <ion-input maxlength="8" [(ngModel)]="formCadastro.password" placeholder="Senha" type="password" required #password></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input maxlength="8" [(ngModel)]="formCadastro.confirmPassword" placeholder="Confirmar senha" type="password" required #confirmPassword></ion-input>
+            </ion-item>
+
+            <ion-item>
+                    <ion-toggle [(ngModel)]="formCadastro.accept" required #accept></ion-toggle>
+                    <ion-label>Aceito os Termos e Condições de Uso</ion-label>
+            </ion-item>
+    
+            <ion-item text-wrap> 
+                    <ion-button expand="full" class="bt_cadastro" (click)="cadastrar()">Cadastrar-se</ion-button>
+            </ion-item>
+    
+            
+        </ion-list> 
+    
   
   </ion-content>
   

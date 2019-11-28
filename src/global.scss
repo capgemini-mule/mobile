@@ -34,6 +34,10 @@ ion-header ion-toolbar:first-child{
     text-align: center;
 }
 
+ion-label{
+    white-space: normal !important;
+}
+
 ion-tab-bar{
     --background: #f2f2f2 !important;
     background: #f2f2f2 !important;

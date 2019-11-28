@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingController, AlertController, NavController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tab2',
@@ -8,7 +9,7 @@ import { LoadingController, AlertController, NavController } from '@ionic/angula
 })
 export class Tab2Page {
 
-  constructor(public navCtrl: NavController, public alertController: AlertController) {
+  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage) {
     
   }
 
@@ -28,8 +29,10 @@ export class Tab2Page {
         }, {
           text: 'Sair',
           handler: () => {
-            console.log('logoff realizado');
-            this.navCtrl.navigateRoot('/login');
+            this.storage.clear().then(() => {
+              console.log('logoff realizado');
+              this.navCtrl.navigateRoot('/login');
+            });
           }
         }
       ]

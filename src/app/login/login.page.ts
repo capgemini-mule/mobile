@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, AlertController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
-
 import { AutenticacaoService } from '../services/autenticacao.service'
 
 @Component({
@@ -20,7 +19,15 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    //VERIFICAÇÃO SE USUÁRIO JÁ ESTÁ LOGADO
+    this.storage.get('userProfile').then((val) => {
+      if(val!=null){
+        this.navCtrl.navigateRoot('/tabs/tab1');
+      }
+
+    });
   }
+  
 
   async login(){
 
@@ -30,15 +37,19 @@ export class LoginPage implements OnInit {
         this.presentAlert("Atenção", "Validação de formulário", "É necessário o preenchimento do campo Senha.");
     }else{
 
+        this.presentLoading("Validando acesso, aguarde...");
+
         this.AutenticacaoService.post("https://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/token", JSON.stringify(this.formLogin))
         .subscribe( result => {
               let autenticacao = result.json();
 
               if(autenticacao.token){
                 this.storage.set('userProfile', autenticacao);
+                this.loading.onDidDismiss();
                 this.navCtrl.navigateRoot('/tabs/tab1');
               }else{
                 this.presentAlert("Atenção", "Validação de formulário", "Dados inválidos.");
+                this.loading.onDidDismiss();
               }
               
         });
@@ -77,7 +88,7 @@ export class LoginPage implements OnInit {
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: 'Hellooo',
+      message: message,
       duration: 2000
     });
     await this.loading.present();    
