@@ -31,7 +31,7 @@ loading: any;
       
       setTimeout( () => {
         
-          this.presentAlert("Equeci minha senha", "", "Link para gerar nova senha enviada por e-mail.").then(()=>{
+          this.presentAlert("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.").then(()=>{
               this.navCtrl.navigateRoot('/login');
           })
           

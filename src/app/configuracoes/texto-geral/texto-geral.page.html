@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Salvador App</ion-title>
+    <ion-buttons slot="end" (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+    </ion-buttons>    
+  </ion-toolbar>
+
+
+</ion-header>
+
+<ion-content>
+
+    <ion-card-header>
+        <ion-card-title>{{titulo}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card class="corpo_Modal" *ngIf="pagina === 'sobre_app'">
+        <ion-card-header>
+            <img src="/assets/imgs/logo_prin.png" /> 
+            <ion-card-subtitle>Salvador APP</ion-card-subtitle>
+            <ion-card-title>Secretaria Municipal de Gestão</ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia. 
+            <br />
+            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="corpo_Modal" *ngIf="pagina === 'privacidade'">
+            <ion-card-header>
+                <ion-card-subtitle>Salvador APP</ion-card-subtitle>
+                <ion-card-title>Termos de Privacidade</ion-card-title>
+            </ion-card-header>
+          
+            <ion-card-content>              
+                <b>1 - </b>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br />
+                <b>2 - </b>Fusce pellentesque enim vitae lacinia maximus.<br />
+                <b>3 - </b>Aliquam in magna id nunc tincidunt posuere.<br />
+                <b>4 - </b>Praesent in tellus id nibh finibus porttitor a quis ipsum.<br />
+                <b>5 - </b>Nulla vel augue et dolor vulputate pharetra at semper quam.<br />
+                <b>6 - </b>Suspendisse bibendum nunc a volutpat mattis.<br />
+                <b>7 - </b>In in libero in est mattis dignissim.<br />
+                <b>8 - </b>Ut consectetur diam eu nisi fringilla, aliquet convallis mi bibendum.<br />
+                <b>9 - </b>Donec suscipit est quis elit suscipit pellentesque.<br />
+                <b>10 - </b>Curabitur a lacus non augue suscipit rutrum.<br />
+                <b>11 - </b>Sed sed tortor maximus, varius nunc quis, eleifend metus.<br />
+                <b>12 - </b>Mauris id leo lacinia, finibus augue non, lobortis neque.<br />              
+            </ion-card-content>
+          </ion-card>
+
+
+          <ion-card class="corpo_Modal" *ngIf="pagina === 'ajuda'">
+              <ion-card-header>
+                  <ion-card-subtitle>Salvador APP</ion-card-subtitle>
+                  <ion-card-title>Perguntas Frequentes</ion-card-title>
+              </ion-card-header>
+            
+              <ion-card-content>              
+                  <ion-list>
+
+                    <ion-item-divider>
+                          <ion-label>
+                              What is the meaning of Lorem ipsum?
+                          </ion-label>
+                      </ion-item-divider>
+                      <ion-item>
+                          <ion-label>
+                              Literally it does not mean anything. It is a sequence of words without a sense of Latin derivation that make up a text also known as filler text, fictitious, blind or placeholder.
+                          </ion-label>
+                      </ion-item>
+
+
+                      <ion-item-divider>
+                          <ion-label>
+                              Why is Lorem Ipsum Dolor used?
+                          </ion-label>
+                      </ion-item-divider>
+                      <ion-item>
+                          <ion-label>
+                              The Lorem Ipsum text is used to fill spaces designated to host texts that have not yet been published. They use programmers, graphic designers, typographers to get a real impression of the digital / advertising / editorial product they are working on.
+                          </ion-label>
+                      </ion-item>
+
+
+                      <ion-item-divider>
+                          <ion-label>
+                              What is the most used version?
+                          </ion-label>
+                      </ion-item-divider>
+                      <ion-item>
+                          <ion-label>
+                              Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                          </ion-label>
+                      </ion-item>
+
+                    </ion-list>             
+              </ion-card-content>
+            </ion-card>
+  
+
+</ion-content>

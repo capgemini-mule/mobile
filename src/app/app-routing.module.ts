@@ -17,6 +17,18 @@ const routes: Routes = [
   {
     path: 'cadastrar-usuario',
     loadChildren: () => import('./cadastrar-usuario/cadastrar-usuario.module').then( m => m.CadastrarUsuarioPageModule)
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./configuracoes/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
+    path: 'alterar-senha',
+    loadChildren: () => import('./configuracoes/alterar-senha/alterar-senha.module').then( m => m.AlterarSenhaPageModule)
+  },
+  {
+    path: 'texto-geral',
+    loadChildren: () => import('./configuracoes/texto-geral/texto-geral.module').then( m => m.TextoGeralPageModule)
   }
 ];
 @NgModule({

@@ -1,0 +1,44 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>Salvador App</ion-title>
+      <ion-buttons slot="end" (click)="closeModal()">
+          <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-buttons>    
+    </ion-toolbar>
+  
+  
+  </ion-header>
+  
+  <ion-content>
+  
+      <ion-card-header>
+          <ion-card-title>Alterar Senha</ion-card-title>
+      </ion-card-header>
+  
+      <ion-list padding>
+
+          <ion-item>
+              <ion-input maxlength="8" [(ngModel)]="formAlterarSenha.old_password" placeholder="Senha Antiga" type="password" required #old_password></ion-input>
+          </ion-item>
+          
+          <ion-item>
+              <ion-input maxlength="8" [(ngModel)]="formAlterarSenha.password" placeholder="Nova Senha" type="password" required #password></ion-input>
+          </ion-item>
+
+          <ion-item>
+              <ion-input maxlength="8" [(ngModel)]="formAlterarSenha.confirmPassword" placeholder="Confirmar nova senha" type="password" required #confirmPassword></ion-input>
+          </ion-item>
+
+          <ion-item></ion-item>
+
+          <ion-item> 
+                  <ion-button expand="full" class="bt_alterar_senha" (click)="alterar_senha()">Cadastrar-se</ion-button>
+          </ion-item>
+  
+          
+      </ion-list> 
+      
+
+
+  </ion-content>
+  

@@ -11,17 +11,27 @@ import { AppComponent } from './app.component';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
-
+import { TextoGeralPageModule } from './configuracoes/texto-geral/texto-geral.module';
+import { PerfilPageModule } from './configuracoes/perfil/perfil.module';
+import { AlterarSenhaPageModule } from './configuracoes/alterar-senha/alterar-senha.module';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [
+    AppComponent
+  ],
+  entryComponents: [
+    
+  ],
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+
+    TextoGeralPageModule,
+    PerfilPageModule,
+    AlterarSenhaPageModule 
   ],
   providers: [
     StatusBar,

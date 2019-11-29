@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+
+import { TextoGeralPage } from '../configuracoes/texto-geral/texto-geral.page';
+import { PerfilPage } from '../configuracoes/perfil/perfil.page';
+import { AlterarSenhaPage } from '../configuracoes/alterar-senha/alterar-senha.page';
+
 
 @Component({
   selector: 'app-tab3',
@@ -9,7 +14,7 @@ import { Storage } from '@ionic/storage';
 })
 export class Tab3Page {
 
-  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public modalController: ModalController) {
     
   }
 
@@ -43,5 +48,32 @@ export class Tab3Page {
     await alert.present();
 
   }
+
+  async presentModalGeral(tipo = "") {
+    console.log("presentModalGeral")
+    const modal = await this.modalController.create({
+      component: TextoGeralPage,
+      componentProps: {
+        'tipo': tipo
+      }
+    });
+    return await modal.present();
+  }
+
+  async presentModalPerfil() {
+    console.log("presentModalPerfil")
+    const modal = await this.modalController.create({
+      component: PerfilPage
+    });
+    return await modal.present();
+  }
+
+  async presentModalAlterarSenha() {
+    console.log("presentModalAlterarSenha")
+    const modal = await this.modalController.create({
+      component: AlterarSenhaPage
+    });
+    return await modal.present();
+  }  
 
 }
