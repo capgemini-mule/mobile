@@ -33,7 +33,7 @@ export class PerfilPage implements OnInit {
 
     this.presentLoading("Validando acesso, aguarde...");
 
-    this.AutenticacaoService.get("https://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/user-info")
+    this.AutenticacaoService.get("http://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/user-info")
         .subscribe( result => {
               this.dadosUsuario = result.json();
               this.loading.onDidDismiss();             

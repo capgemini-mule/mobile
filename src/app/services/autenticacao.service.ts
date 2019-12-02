@@ -16,6 +16,7 @@ export class AutenticacaoService {
     var headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json' );
+    headers.append("Access-Control-Allow-Origin", '*');    
     const requestOptions = new RequestOptions({ headers: headers });
     
     return this.http.get(link, requestOptions); 

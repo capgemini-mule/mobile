@@ -49,7 +49,7 @@ export class CadastrarUsuarioPage implements OnInit {
       console.log("formCadastro",this.formCadastro)
       this.presentLoading("Efetuando cadastro, aguarde...");
       
-      this.AutenticacaoService.post("https://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/sign-on", JSON.stringify(this.formCadastro))
+      this.AutenticacaoService.post("http://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/sign-on", JSON.stringify(this.formCadastro))
         .subscribe( result => {
               let retorno = result.json();
 
