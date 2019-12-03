@@ -17,44 +17,28 @@
         <ion-card-title>Favoritos</ion-card-title>
     </ion-card-header>
 
-    <ion-grid class="gridFavoritos">
+    <ion-grid class="gridFavoritos" *ngIf="not_found==false">
 
         <ion-row>
-          <ion-col>
-            <ion-icon name="calendar"></ion-icon>
-            <br />
-            Agendar Serviços
-          </ion-col>
-          <ion-col>
-            <ion-icon name="car"></ion-icon>
-            <br />
-            Situação do Veículo
-          </ion-col>
-          <ion-col>
-            <ion-icon name="calculator"></ion-icon>
-            <br />
-            Pontuação do Condutor
-          </ion-col>          
+          
+            <ion-col sizeLg="4" sizeMd="4" sizeXs="4" *ngFor="let servico of lista_servicos" (click)="openFavorite(servico.id)">
+              <ion-icon name="{{servico.icon}}"></ion-icon>
+              <br />
+              {{ servico.label }}
+            </ion-col>
+                         
         </ion-row>
 
-        <ion-row>
-            <ion-col>
-              <ion-icon name="barcode"></ion-icon>
-              <br />
-              Segunda Via de Conta
-            </ion-col>
-            <ion-col>
-              <ion-icon name="card"></ion-icon>
-              <br />
-              Consultar Débito
-            </ion-col>
-            <ion-col>
-              <ion-icon name="chatboxes"></ion-icon>
-              <br />
-              Fale com o Governo
-            </ion-col>          
-          </ion-row>
+       
 
     </ion-grid>
+
+    <ion-list lines="none" *ngIf="not_found==true">
+      <ion-card>
+          <ion-card-content>
+              Você não possui favoritos até o momento.
+          </ion-card-content>
+      </ion-card>
+  </ion-list>
 
 </ion-content>

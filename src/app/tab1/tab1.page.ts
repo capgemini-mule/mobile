@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { LoadingController, AlertController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
+import { AutenticacaoService } from '../services/autenticacao.service'
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -11,24 +13,27 @@ export class Tab1Page {
 
   input_search: any = false;
   not_found: any = false;
+  loading: any;
 
   lista_servicos: any = [];
-  lista_servicos_completa: any = [
-    {icon: "ribbon", label: "Certificado Digital", acao:"./"},
-    {icon: "car", label: "Veículos e Condutores", acao:"./"},
-    {icon: "person", label: "Emissão de Carteira de Identidade", acao:"./"},
-    {icon: "book", label: "Educação", acao:"./"},
-    {icon: "medkit", label: "Saúde", acao:"./"},
-    {icon: "unlock", label: "Segurança", acao:"./"},
-    {icon: "bus", label: "Rodovias e Transportes", acao:"./"}
-  ]
+  lista_servicos_completa: any = []
 
-  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public loadingController: LoadingController, public AutenticacaoService: AutenticacaoService) {
 
   }
 
   ngOnInit(){
-    this.lista_servicos = this.lista_servicos_completa;
+
+    this.presentLoading("Carregando lista de serviços, aguarde...");
+
+    this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/services")
+        .subscribe( result => {
+            this.lista_servicos = result.json(); 
+      }, err =>{
+            // this.dadosUsuario = { firstName: "Max", lastName: "Mulesoft", username: "maxmule", email: "max@mulesoft.com" }
+            this.notFound();
+      });
+    // this.lista_servicos = this.lista_servicos_completa;
   }
 
   filtrarServicos(itemSearch){
@@ -89,6 +94,29 @@ export class Tab1Page {
 
     await alert.present();
 
+  }
+
+  async presentLoading(message) {
+    this.loading = await this.loadingController.create({
+      message: message,
+      duration: 2000
+    });
+    await this.loading.present();    
+  }
+
+  like(item){
+    console.log("item - like", item);
+    this.presentLoading("Curtida sendo realizada... :-)");
+  }
+
+  favorito(item){
+    console.log("item - favorito", item);
+    this.presentLoading("Item sendo acrescentado aos favoritos... :-)");
+  }
+
+  openService(item){
+    console.log("item", item)
+    this.presentLoading("Serviço em desenvolvimento, aguarde...");
   }
 
 }

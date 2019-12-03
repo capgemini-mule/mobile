@@ -39,8 +39,7 @@ export class LoginPage implements OnInit {
 
         this.presentLoading("Validando acesso, aguarde...");
 
-        this.AutenticacaoService.post("https://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/token", JSON.stringify(this.formLogin))
-        .subscribe( result => {
+        this.AutenticacaoService.post("http://cogel-security-proxy.us-e2.cloudhub.io/token", JSON.stringify(this.formLogin)).subscribe( result => {
               let autenticacao = result.json();
 
               if(autenticacao.token){
@@ -52,6 +51,8 @@ export class LoginPage implements OnInit {
                 this.loading.onDidDismiss();
               }
               
+        }, err =>{
+          console.log("ops, algum erro", err);          
         });
         
     }

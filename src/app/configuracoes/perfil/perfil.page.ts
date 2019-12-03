@@ -33,10 +33,12 @@ export class PerfilPage implements OnInit {
 
     this.presentLoading("Validando acesso, aguarde...");
 
-    this.AutenticacaoService.get("http://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/user-info")
+    this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/user-info")
         .subscribe( result => {
               this.dadosUsuario = result.json();
               this.loading.onDidDismiss();             
+        }, err =>{
+              // this.dadosUsuario = { firstName: "Max", lastName: "Mulesoft", username: "maxmule", email: "max@mulesoft.com" }
         });
         
   }

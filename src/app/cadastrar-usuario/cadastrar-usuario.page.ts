@@ -43,17 +43,20 @@ export class CadastrarUsuarioPage implements OnInit {
     else if(this.formCadastro.email===""){  this.inputemail.setFocus(); }
     else if(this.formCadastro.password===""){  this.inputpassword.setFocus(); }
     else if(this.formCadastro.confirmPassword===""){  this.inputconfirmPassword.setFocus(); }
-    else if(this.formCadastro.accept===false){  
-      this.presentAlert("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
+    else if(this.formCadastro.confirmPassword!==this.formCadastro.password){ 
+        this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem."); 
+        this.inputpassword.setFocus(); 
+    }else if(this.formCadastro.accept===false){  
+        this.presentAlert("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
     }else{
       console.log("formCadastro",this.formCadastro)
       this.presentLoading("Efetuando cadastro, aguarde...");
       
-      this.AutenticacaoService.post("http://anypoint.mulesoft.com/mocking/api/v1/links/a17efb3a-fb82-4593-9eae-381aeb108192/sign-on", JSON.stringify(this.formCadastro))
+      this.AutenticacaoService.post("http://cogel-security-proxy.us-e2.cloudhub.io/sign-on", JSON.stringify(this.formCadastro))
         .subscribe( result => {
               let retorno = result.json();
 
-              if(retorno.status==="User created successfully."){
+              if(retorno==="User created successfully."){
                 this.loading.onDidDismiss().then(()=>{
                   this.presentAlert("Cadastro", "", "Cadastro Efetuado com Sucesso.").then(()=>{
                     this.navCtrl.navigateRoot('/login');
@@ -65,6 +68,8 @@ export class CadastrarUsuarioPage implements OnInit {
                 });
               }
               
+        }, err =>{
+          
         });
 
     }
