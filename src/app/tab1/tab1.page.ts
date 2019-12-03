@@ -29,6 +29,7 @@ export class Tab1Page {
     this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/services")
         .subscribe( result => {
             this.lista_servicos = result.json(); 
+            this.lista_servicos_completa = result.json(); 
       }, err =>{
             // this.dadosUsuario = { firstName: "Max", lastName: "Mulesoft", username: "maxmule", email: "max@mulesoft.com" }
             this.notFound();
