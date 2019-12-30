@@ -29,9 +29,9 @@ export class LoginPage implements OnInit {
   }
   
 
-  async login(){
+  async login() {
 
-    if(this.formLogin.username===""){
+    if(this.formLogin.username==="") {
       this.presentAlert("Atenção", "Validação de formulário", "É necessário o preenchimento do campo E-mail.");
     }else if(this.formLogin.password===""){
         this.presentAlert("Atenção", "Validação de formulário", "É necessário o preenchimento do campo Senha.");
@@ -39,14 +39,14 @@ export class LoginPage implements OnInit {
 
         this.presentLoading("Validando acesso, aguarde...");
 
-        this.AutenticacaoService.post("http://cogel-security-proxy.us-e2.cloudhub.io/token", JSON.stringify(this.formLogin)).subscribe( result => {
+        this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/token", JSON.stringify(this.formLogin)).subscribe( result => {
               let autenticacao = result.json();
 
-              if(autenticacao.token){
+              if(autenticacao.access_token) {
                 this.storage.set('userProfile', autenticacao);
                 this.loading.onDidDismiss();
                 this.navCtrl.navigateRoot('/tabs/tab1');
-              }else{
+              } else {
                 this.presentAlert("Atenção", "Validação de formulário", "Dados inválidos.");
                 this.loading.onDidDismiss();
               }

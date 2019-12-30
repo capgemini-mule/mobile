@@ -12,9 +12,9 @@ export class PerfilPage implements OnInit {
 
   loading: any;
   dadosUsuario: any = {
-      firstName: "",
-      lastName: "",
-      username: "",
+      nome: "",
+      sobrenome: "",
+      cpf: "",
       email: ""
   }
 
@@ -33,12 +33,12 @@ export class PerfilPage implements OnInit {
 
     this.presentLoading("Validando acesso, aguarde...");
 
-    this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/user-info")
+    this.AutenticacaoService.get("http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/email")
         .subscribe( result => {
               this.dadosUsuario = result.json();
               this.loading.onDidDismiss();             
         }, err =>{
-              // this.dadosUsuario = { firstName: "Max", lastName: "Mulesoft", username: "maxmule", email: "max@mulesoft.com" }
+          // this.dadosUsuario = { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
         });
         
   }

@@ -16,27 +16,27 @@
       <ion-list padding>
 
             <ion-item>
-                <ion-input [(ngModel)]="formCadastro.firstName" placeholder="Nome" type="text" required #firstName></ion-input>
+                <ion-input maxlength="100" [(ngModel)]="formCadastro.nome" placeholder="Nome" type="text" required #firstName></ion-input>
             </ion-item>
 
             <ion-item>
-                <ion-input [(ngModel)]="formCadastro.lastName" placeholder="Sobrenome" type="text" required #lastName></ion-input>
+                <ion-input  maxlength="100" [(ngModel)]="formCadastro.sobrenome" placeholder="Sobrenome" type="text" required #lastName></ion-input>
             </ion-item>
 
             <ion-item>
-                <ion-input [(ngModel)]="formCadastro.username" placeholder="Usuário" type="text" required #username></ion-input>
+                <ion-input maxlength="14" [(ngModel)]="formCadastro.cpf" placeholder="CPF" type="text" required #cpf></ion-input>
             </ion-item>
 
             <ion-item>
-                <ion-input [(ngModel)]="formCadastro.email" placeholder="E-mail" type="email" required #email></ion-input>
+                <ion-input maxlength="100" [(ngModel)]="formCadastro.email" placeholder="E-mail" type="email" required #email></ion-input>
             </ion-item>
             
             <ion-item>
-                <ion-input maxlength="8" [(ngModel)]="formCadastro.password" placeholder="Senha" type="password" required #password></ion-input>
+                <ion-input maxlength="8" [(ngModel)]="formCadastro.senha" placeholder="Senha" type="password" required #password></ion-input>
             </ion-item>
 
             <ion-item>
-                <ion-input maxlength="8" [(ngModel)]="formCadastro.confirmPassword" placeholder="Confirmar senha" type="password" required #confirmPassword></ion-input>
+                <ion-input maxlength="8" [(ngModel)]="formCadastro.confirmarSenha" placeholder="Confirmar senha" type="password" required #confirmPassword></ion-input>
             </ion-item>
 
             <ion-item>
@@ -48,9 +48,7 @@
                     <ion-button expand="full" class="bt_cadastro" (click)="cadastrar()">Cadastrar-se</ion-button>
             </ion-item>
     
-            
-        </ion-list> 
-    
-  
+        </ion-list>
+        
   </ion-content>
   

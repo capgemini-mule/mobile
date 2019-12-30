@@ -26,7 +26,7 @@ export class Tab1Page {
 
     this.presentLoading("Carregando lista de serviços, aguarde...");
 
-    this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/services")
+    this.AutenticacaoService.get("http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos")
         .subscribe( result => {
             this.lista_servicos = result.json(); 
             this.lista_servicos_completa = result.json(); 
@@ -69,7 +69,7 @@ export class Tab1Page {
   }
 
   async logoff(){
-
+    // http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout
     const alert = await this.alertController.create({
       header: 'Sair',
       message: 'Tem certeza que deseja sair da sua conta?',
