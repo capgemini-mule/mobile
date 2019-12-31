@@ -43,14 +43,11 @@ export class Tab1Page {
     var retorno = this.lista_servicos_completa.filter(el => el.label.toLowerCase().indexOf(itemSearch.target.value.toLowerCase()) > -1 );
     
     if(retorno.length > 0) {
-      console.log("1")
       this.not_found = false;
       this.lista_servicos = retorno;
     } else {
-      console.log("3")
       this.notFound();
     }
-
     console.log("s",itemSearch.target.value)
   }
 
@@ -98,7 +95,7 @@ export class Tab1Page {
   }
 
   clearTokenAndLeave() {
-    this.storage.clear().then(() => {
+    this.storage.set('access_token', null).then(() => {
         this.loading.dismiss().then(() => {
           this.navCtrl.navigateRoot('/login');
        });
@@ -114,16 +111,14 @@ export class Tab1Page {
 
   like(item) {
     console.log("item - like", item);
-    this.presentLoading("Curtida sendo realizada... :-)");
+    //this.presentLoading("Curtida sendo realizada... :-)");
   }
 
   favorito(item) {
     console.log("item - favorito", item);
-    this.presentLoading("Item sendo acrescentado aos favoritos... :-)");
   }
 
   openService(item) {
     console.log("item", item)
-    this.presentLoading("Serviço em desenvolvimento, aguarde...");
   }
 }

@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.storage.get('userProfile').then((val) => {
+    this.storage.get('access_token').then((val) => {
       if(val!=null) {
         this.navCtrl.navigateRoot('/tabs/tab1');
       }
@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
               let autenticacao = result.json();
               this.loading.dismiss().then(() => {
                 if(autenticacao.access_token) {
-                  this.storage.set('userProfile', autenticacao);
+                  this.storage.set('access_token', autenticacao);
                   this.navCtrl.navigateRoot('/tabs/tab1');
                 } else {
                   this.presentAlert("Atenção", "", "Usuário ou senha inválidos");

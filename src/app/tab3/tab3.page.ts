@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ModalController, AlertController, NavController } from '@ionic/angular';
+import { ModalController, AlertController, NavController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { TextoGeralPage } from '../configuracoes/texto-geral/texto-geral.page';
 import { PerfilPage } from '../configuracoes/perfil/perfil.page';
 import { AlterarSenhaPage } from '../configuracoes/alterar-senha/alterar-senha.page';
+import { AutenticacaoService } from '../services/autenticacao.service'
 
 
 @Component({
@@ -14,12 +15,14 @@ import { AlterarSenhaPage } from '../configuracoes/alterar-senha/alterar-senha.p
 })
 export class Tab3Page {
 
-  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public modalController: ModalController) {
-    
+  loading: any;
+
+  constructor(public navCtrl: NavController, public alertController: AlertController, 
+    private storage: Storage, public modalController: ModalController,
+    public loadingController: LoadingController, public AutenticacaoService: AutenticacaoService) {
   }
 
-  async logoff(){
-
+  async logoff() {
     const alert = await this.alertController.create({
       header: 'Sair',
       message: 'Tem certeza que deseja sair da sua conta?',
@@ -34,19 +37,34 @@ export class Tab3Page {
         }, {
           text: 'Sair',
           handler: () => {
-
-            this.storage.clear().then(() => {
-              console.log('logoff realizado');
-              this.navCtrl.navigateRoot('/login');
+            this.presentLoading("Saindo...");
+            this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout").subscribe( result => {
+              this.clearTokenAndLeave()
+            }, err =>{
+              console.log("Erro na requisição: ", err);
+              this.clearTokenAndLeave()    
             });
-            
           }
         }
       ]
     });
 
     await alert.present();
+  }
 
+  async presentLoading(message) {
+    this.loading = await this.loadingController.create({
+      message: message
+    });
+    await this.loading.present();    
+  }
+
+  clearTokenAndLeave() {
+    this.storage.set('access_token', null).then(() => {
+        this.loading.dismiss().then(() => {
+          this.navCtrl.navigateRoot('/login');
+       });
+    });
   }
 
   async presentModalGeral(tipo = "") {
@@ -74,6 +92,6 @@ export class Tab3Page {
       component: AlterarSenhaPage
     });
     return await modal.present();
-  }  
-
+  }
+  
 }

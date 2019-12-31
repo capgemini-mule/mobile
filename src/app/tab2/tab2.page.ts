@@ -21,20 +21,19 @@ export class Tab2Page {
     
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
-    this.presentLoading("Carregando lista de favoritos, aguarde...");
+    //this.presentLoading("Carregando lista de favoritos, aguarde...");
 
-    this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/favorites")
-        .subscribe( result => {
-            this.lista_servicos = result.json();
-      }, err =>{
+    //this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/favorites")
+    //    .subscribe( result => {
+    //        this.lista_servicos = result.json();
+    //  }, err =>{
             this.notFound();
-      });
+    //  });
   }
 
-  async logoff(){
-
+  async logoff() {
     const alert = await this.alertController.create({
       header: 'Sair',
       message: 'Tem certeza que deseja sair da sua conta?',
@@ -49,9 +48,12 @@ export class Tab2Page {
         }, {
           text: 'Sair',
           handler: () => {
-            this.storage.clear().then(() => {
-              console.log('logoff realizado');
-              this.navCtrl.navigateRoot('/login');
+            this.presentLoading("Saindo...");
+            this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout").subscribe( result => {
+              this.clearTokenAndLeave()
+            }, err =>{
+              console.log("Erro na requisição: ", err);
+              this.clearTokenAndLeave()    
             });
           }
         }
@@ -59,22 +61,28 @@ export class Tab2Page {
     });
 
     await alert.present();
-
   }
 
-  notFound(){
+  clearTokenAndLeave() {
+    this.storage.set('access_token', null).then(() => {
+        this.loading.dismiss().then(() => {
+          this.navCtrl.navigateRoot('/login');
+       });
+    });
+  }
+
+  notFound() {
     this.not_found = true;
   }
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
+      message: message
     });
     await this.loading.present();    
   }
 
-  openFavorite(item){
+  openFavorite(item) {
     console.log("item", item)
     this.presentLoading("Serviço em desenvolvimento, aguarde...");
   }
