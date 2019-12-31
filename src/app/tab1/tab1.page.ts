@@ -19,10 +19,12 @@ export class Tab1Page {
   lista_servicos_completa: any = []
 
   constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public loadingController: LoadingController, public AutenticacaoService: AutenticacaoService) {
-
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
 
     this.presentLoading("Carregando lista de serviços, aguarde...");
     this.AutenticacaoService.get("http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos")
@@ -115,7 +117,44 @@ export class Tab1Page {
   }
 
   favorito(item) {
-    console.log("item - favorito", item);
+    this.addRemoveFavorite(item)
+  }
+
+  addRemoveFavorite(item) {
+    this.storage.get('servicos_favoritos').then((favoritesString) => {
+      let favorites = JSON.parse(favoritesString)
+      if (favorites !== null && favorites.length > 0) {
+        if (favorites.filter(x => x.id === item.id).length > 0) {
+          favorites = favorites.filter(x => x.id !== item.id)
+        } else {
+          favorites.push(item)
+        }
+      } else {
+        favorites = []
+        favorites.push(item)
+      }
+      this.storage.set('servicos_favoritos', JSON.stringify(favorites))
+    });
+  }
+
+  isFavorite(item) {
+    this.storage.get('servicos_favoritos').then((favoritesString) => {
+      let favorites = JSON.parse(favoritesString)
+      if (favorites !== null && favorites.length > 0) {
+        if (favorites.filter(x => x.id === item.id).length > 0) {
+          return true
+        }
+      }
+      return false
+    });
+    return false
+  }
+
+  iconColor(item) {
+    if (this.isFavorite(item)) {
+      return 'yellow'
+    }
+    return 'black'
   }
 
   openService(item) {

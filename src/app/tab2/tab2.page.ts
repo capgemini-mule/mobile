@@ -15,22 +15,25 @@ export class Tab2Page {
   loading: any;
 
   lista_servicos: any = [];
-  lista_servicos_completa: any = []
 
   constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public AutenticacaoService: AutenticacaoService, public loadingController: LoadingController) {
     
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    this.getFavoritesServices()
+  }
 
-    //this.presentLoading("Carregando lista de favoritos, aguarde...");
-
-    //this.AutenticacaoService.get("http://cogel-security-proxy.us-e2.cloudhub.io/favorites")
-    //    .subscribe( result => {
-    //        this.lista_servicos = result.json();
-    //  }, err =>{
-            this.notFound();
-    //  });
+  getFavoritesServices() {
+    this.storage.get('servicos_favoritos').then((favoritesString) => {
+      let favorites = JSON.parse(favoritesString)
+      if (favorites !== null && favorites.length > 0) {
+        this.lista_servicos = favorites
+        if (this.lista_servicos.length === 0) {
+          this.notFound();
+        }
+      }
+    })
   }
 
   async logoff() {
@@ -83,8 +86,6 @@ export class Tab2Page {
   }
 
   openFavorite(item) {
-    console.log("item", item)
-    this.presentLoading("Serviço em desenvolvimento, aguarde...");
+   
   }
-
 }

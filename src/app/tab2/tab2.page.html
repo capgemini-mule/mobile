@@ -21,7 +21,7 @@
 
         <ion-row>
           
-            <ion-col sizeLg="4" sizeMd="4" sizeXs="4" *ngFor="let servico of lista_servicos" (click)="openFavorite(servico.id)">
+            <ion-col sizeLg="4" sizeMd="4" sizeXs="4" *ngFor="let servico of lista_servicos" (click)="openFavorite(servico)">
               <ion-icon name="{{servico.icon}}"></ion-icon>
               <br />
               {{ servico.label }}

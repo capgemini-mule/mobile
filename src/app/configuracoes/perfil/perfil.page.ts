@@ -19,10 +19,14 @@ export class PerfilPage implements OnInit {
   }
 
   constructor(public modalController: ModalController, public AutenticacaoService: AutenticacaoService, private alertController: AlertController, public loadingController: LoadingController) {
-    this.iniciaDadosUsuario();
+
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.iniciaDadosUsuario();
   }
 
   closeModal() {
