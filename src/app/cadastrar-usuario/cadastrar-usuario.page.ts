@@ -65,43 +65,45 @@ export class CadastrarUsuarioPage implements OnInit {
     else if(!this.isValidEmail(this.formCadastro.email)){  this.inputEmail.setFocus(); }
     else if(this.formCadastro.senha===""){  this.inputPassword.setFocus(); }
     else if(this.formCadastro.confirmarSenha===""){  this.inputConfirmPassword.setFocus(); }
-    else if(this.formCadastro.senha!==this.formCadastro.confirmarSenha){ 
-        this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem."); 
-        this.inputPassword.setFocus(); 
-    }else if(this.formCadastro.accept===false){  
+    else if(this.formCadastro.senha!==this.formCadastro.confirmarSenha) {
+      this.inputPassword.setFocus();
+      this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem."); 
+    } else if(this.formCadastro.accept===false){  
         this.presentAlert("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
-    }else{
+    } else {
       console.log("formCadastro",this.formCadastro)
       this.presentLoading("Efetuando cadastro, aguarde...");
       
       this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/signup", JSON.stringify(this.formCadastro))
         .subscribe( result => {
               let retorno = result.json();
-
-              if(retorno.message==="Cadastro concluído com sucesso. Você pode fazer login com suas credenciais."){
-                this.loading.onDidDismiss().then(()=>{
-                  this.presentAlert("Cadastro", "", "Cadastro Efetuado com Sucesso.").then(()=>{
+              if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {
+                this.loading.dismiss().then(() => {
+                  this.presentAlert("Cadastro", "", "Cadastro Efetuado com Sucesso.", () => {
                     this.navCtrl.navigateRoot('/login');
                   })
                 });
-              }else{
-                this.loading.onDidDismiss().then(()=>{
-                  this.presentAlert("Atenção", "Validação de formulário", "Dados inválidos.");
+              } else {
+                this.loading.dismiss().then(() => {
+                  this.presentAlert("Erro", "", "Erro ao cadastrar usuário");
                 });
               }
               
         }, err =>{
-          this.presentAlert("Atenção!", "Validação de formulário", "Dados inválidos.");
+          console.log("Erro na requisição: ", err);
+          this.loading.dismiss().then(() => {
+            this.presentAlert("ops!", "", "Ocorreu um erro, por favor tente novamente");
+          });
         });
     }
   }
 
-  async presentAlert(title, subTitle, message) {
+  async presentAlert(title, subTitle, message, okCompletion = null) {
     const alert = await this.alertController.create({
       header: title,
       subHeader: subTitle,
       message: message,
-      buttons: ['OK']
+      buttons: [{text: 'OK', handler: okCompletion}]
     });
 
     await alert.present();
@@ -109,8 +111,7 @@ export class CadastrarUsuarioPage implements OnInit {
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
+      message: message
     });
     await this.loading.present();    
   }

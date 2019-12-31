@@ -29,12 +29,12 @@ export class AlterarSenhaPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  async presentAlert(title, subTitle, mensage) {
+  async presentAlert(title, subTitle, message, okCompletion = null) {
     const alert = await this.alertController.create({
       header: title,
       subHeader: subTitle,
-      message: mensage,
-      buttons: ['OK']
+      message: message,
+      buttons: [{text: 'OK', handler: okCompletion}]
     });
 
     await alert.present();
@@ -48,28 +48,23 @@ export class AlterarSenhaPage implements OnInit {
     await this.loading.present();    
   }
 
-
-  alterar_senha(){
+  alterar_senha() {
 
     if(this.formAlterarSenha.old_password===""){  this.inputoldpassword.setFocus(); }
     else if(this.formAlterarSenha.password===""){  this.inputpassword.setFocus(); }
     else if(this.formAlterarSenha.confirmPassword===""){  this.inputconfirmPassword.setFocus(); }
-    else{
-      
+    else if(this.formAlterarSenha.password!==this.formAlterarSenha.confirmPassword) {
+      this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem.");
+      this.inputpassword.setFocus();
+  } else {
       this.presentLoading("Efetuando alteração de senha, aguarde...");
-      
       setTimeout( () => {
-        
-          this.presentAlert("Alterar Senha", "", "senha alterada com suscesso").then(()=>{
+        this.loading.dismiss().then(() => {
+          this.presentAlert("Alterar Senha", "", "senha alterada com suscesso", () => {
               this.closeModal();
           })
-          
-      }, 3000);
-
+        })
+      }, 2000);
     }
-
-
   }
-
-
 }

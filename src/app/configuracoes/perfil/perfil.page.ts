@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController  } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController  } from '@ionic/angular';
 
 import { AutenticacaoService } from '../../services/autenticacao.service'
 
@@ -18,9 +18,9 @@ export class PerfilPage implements OnInit {
       email: ""
   }
 
-  constructor(public modalController: ModalController, public AutenticacaoService: AutenticacaoService, public loadingController: LoadingController) {
+  constructor(public modalController: ModalController, public AutenticacaoService: AutenticacaoService, private alertController: AlertController, public loadingController: LoadingController) {
     this.iniciaDadosUsuario();
-   }
+  }
 
   ngOnInit() {
   }
@@ -29,26 +29,39 @@ export class PerfilPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  iniciaDadosUsuario(){
+  iniciaDadosUsuario() {
 
-    this.presentLoading("Validando acesso, aguarde...");
+    this.presentLoading("Carregando dados do usuário, aguarde...");
 
     this.AutenticacaoService.get("http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/email")
         .subscribe( result => {
+          this.loading.dismiss().then(() => {
               this.dadosUsuario = result.json();
-              this.loading.onDidDismiss();             
-        }, err =>{
+          })          
+        }, err => {
           // this.dadosUsuario = { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
+          console.log("Erro na requisição: ", err);
+          this.loading.dismiss().then(() => {
+            this.presentAlert("ops!", "", "Ocorreu um erro, por favor tente novamente");
+          });
         });
-        
+  }
+
+  async presentAlert(title, subTitle, message, okCompletion = null) {
+    const alert = await this.alertController.create({
+      header: title,
+      subHeader: subTitle,
+      message: message,
+      buttons: [{text: 'OK', handler: okCompletion}]
+    });
+
+    await alert.present();
   }
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
+      message: message
     });
     await this.loading.present();    
   }
-
 }

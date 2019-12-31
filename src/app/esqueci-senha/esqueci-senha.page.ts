@@ -22,31 +22,35 @@ loading: any;
   }
 
 
-  esqueci_senha(){
+  isValidEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
-    if(this.formEsqueci.email===""){  this.inputemail.setFocus(); }
-    else{
+  esqueci_senha() {
+
+    if(!this.isValidEmail(this.formEsqueci.email)) {  
+      this.presentAlert("Atenção", "", "Preencha um e-mail válido.");
+    } else {
       
       this.presentLoading("Efetuando solicitação de nova senha, aguarde...");
       
       setTimeout( () => {
-        
-          this.presentAlert("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.").then(()=>{
-              this.navCtrl.navigateRoot('/login');
+        this.loading.dismiss().then(() => {
+          this.presentAlert("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", () => {
+            this.navCtrl.navigateRoot('/login');
           })
-          
-      }, 3000);
-      
+        });
+      }, 2000);
     }
-
   }
 
-  async presentAlert(title, subTitle, mensage) {
+  async presentAlert(title, subTitle, message, okCompletion = null) {
     const alert = await this.alertController.create({
       header: title,
       subHeader: subTitle,
-      message: mensage,
-      buttons: ['OK']
+      message: message,
+      buttons: [{text: 'OK', handler: okCompletion}]
     });
 
     await alert.present();
@@ -54,8 +58,7 @@ loading: any;
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
+      message: message
     });
     await this.loading.present();    
   }

@@ -12,7 +12,7 @@ export class AutenticacaoService {
 
   }
 
-  accessToken() {
+  private accessToken() {
     this.storage.get('userProfile').then((val) => {
       if(val != null) {
         return val;
@@ -21,7 +21,7 @@ export class AutenticacaoService {
     return "";
   }
 
-  public get(link=""){
+  public get(link="") {
 
     var headers = new Headers();
     headers.append("Accept", 'application/json');
@@ -31,10 +31,9 @@ export class AutenticacaoService {
     const requestOptions = new RequestOptions({ headers: headers });
     
     return this.http.get(link, requestOptions); 
-    
   }
 
-  public post(link="", payload=""){
+  public post(link="", payload="") {
 
         var headers = new Headers();
         headers.append("Accept", 'application/json');
@@ -45,6 +44,4 @@ export class AutenticacaoService {
 
         return this.http.post(link, payload, requestOptions);
   }
-
-
 }

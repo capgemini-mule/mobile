@@ -22,54 +22,52 @@ export class Tab1Page {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
     this.presentLoading("Carregando lista de serviços, aguarde...");
-
     this.AutenticacaoService.get("http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos")
         .subscribe( result => {
-            this.lista_servicos = result.json(); 
-            this.lista_servicos_completa = result.json(); 
-      }, err =>{
-            // this.dadosUsuario = { firstName: "Max", lastName: "Mulesoft", username: "maxmule", email: "max@mulesoft.com" }
+          this.loading.dismiss().then(() => {
+              this.lista_servicos = result.json(); 
+              this.lista_servicos_completa = result.json();
+          });
+      }, err => {
+          this.loading.dismiss().then(() => {
             this.notFound();
+          });
       });
-    // this.lista_servicos = this.lista_servicos_completa;
   }
 
-  filtrarServicos(itemSearch){
+  filtrarServicos(itemSearch) {
     
     var retorno = this.lista_servicos_completa.filter(el => el.label.toLowerCase().indexOf(itemSearch.target.value.toLowerCase()) > -1 );
     
-    if(retorno.length>0){
+    if(retorno.length > 0) {
       console.log("1")
       this.not_found = false;
       this.lista_servicos = retorno;
-    }else{
+    } else {
       console.log("3")
       this.notFound();
     }
 
     console.log("s",itemSearch.target.value)
-    
-    
   }
 
-  notFound(){
+  notFound() {
     this.not_found = true;
   }
 
-  ocultarSearch(){
+  ocultarSearch() {
     this.input_search = false;
     this.ngOnInit();
   }
 
-  openSearch(){
+  openSearch() {
     this.input_search = true;
   }
 
-  async logoff(){
-    // http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout
+  async logoff() {
     const alert = await this.alertController.create({
       header: 'Sair',
       message: 'Tem certeza que deseja sair da sua conta?',
@@ -84,9 +82,12 @@ export class Tab1Page {
         }, {
           text: 'Sair',
           handler: () => {
-            this.storage.clear().then(() => {
-              console.log('logoff realizado');
-              this.navCtrl.navigateRoot('/login');
+            this.presentLoading("Saindo...");
+            this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout").subscribe( result => {
+              this.clearTokenAndLeave()
+            }, err =>{
+              console.log("Erro na requisição: ", err);
+              this.clearTokenAndLeave()    
             });
           }
         }
@@ -94,30 +95,35 @@ export class Tab1Page {
     });
 
     await alert.present();
+  }
 
+  clearTokenAndLeave() {
+    this.storage.clear().then(() => {
+        this.loading.dismiss().then(() => {
+          this.navCtrl.navigateRoot('/login');
+       });
+    });
   }
 
   async presentLoading(message) {
     this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
+      message: message
     });
     await this.loading.present();    
   }
 
-  like(item){
+  like(item) {
     console.log("item - like", item);
     this.presentLoading("Curtida sendo realizada... :-)");
   }
 
-  favorito(item){
+  favorito(item) {
     console.log("item - favorito", item);
     this.presentLoading("Item sendo acrescentado aos favoritos... :-)");
   }
 
-  openService(item){
+  openService(item) {
     console.log("item", item)
     this.presentLoading("Serviço em desenvolvimento, aguarde...");
   }
-
 }
