@@ -1,7 +1,7 @@
+import { DialogService } from './../services/ui/dialog.service';
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
+import {  NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-
 import { AutenticacaoService } from '../services/autenticacao.service'
 
 @Component({
@@ -12,13 +12,15 @@ import { AutenticacaoService } from '../services/autenticacao.service'
 export class LoginPage implements OnInit {
 
   formLogin = { username: '', password: ''}
-  loading: any;
 
-  constructor(public navCtrl: NavController, private alertController: AlertController, public AutenticacaoService: AutenticacaoService, private storage: Storage, public loadingController: LoadingController) { 
-    
+  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, private storage: Storage, private dialogService: DialogService) { 
   }
 
   ngOnInit() {
+    
+  }
+
+  ngAfterViewInit() {
     this.storage.get('access_token').then((val) => {
       if(val!=null) {
         this.navCtrl.navigateRoot('/tabs/tab1');
@@ -26,63 +28,41 @@ export class LoginPage implements OnInit {
     });
   }
 
-  async login() {
-
-    if(this.formLogin.username==="") {
-      this.presentAlert("Atenção", "", "Preencha o e-mail.");
-    } else if (this.formLogin.password==="") {
-        this.presentAlert("Atenção", "", "Preencha a senha.");
+  login() {
+    if(this.formLogin.username === "") {
+      this.dialogService.showDialog(this.dialogService.WARNING, "", this.dialogService.FILL_EMAIL)
+    } else if (this.formLogin.password === "") {
+      this.dialogService.showDialog(this.dialogService.WARNING, "", this.dialogService.FILL_PASSWORD)
     } else {
-        this.presentLoading("Validando acesso, aguarde...");
-        this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/token", JSON.stringify(this.formLogin)).subscribe( result => {
-              let autenticacao = result.json();
-              this.loading.dismiss().then(() => {
+        this.dialogService.showLoading("Validando acesso, aguarde...")
+        this.autenticacaoService.post(this.autenticacaoService.URL_LOGIN, JSON.stringify(this.formLogin)).subscribe( result => {
+              let autenticacao = result.json()
+              this.dialogService.hideLoading(() => {
                 if(autenticacao.access_token) {
                   this.storage.set('access_token', autenticacao);
                   this.navCtrl.navigateRoot('/tabs/tab1');
                 } else {
-                  this.presentAlert("Atenção", "", "Usuário ou senha inválidos");
+                  this.dialogService.showDialog(this.dialogService.WARNING, "", "Usuário ou senha inválidos");
                 }
-              });
+              })
         }, err => {
-          console.log("Erro na requisição: ", err);
-          this.loading.dismiss().then(() => {
-            this.presentAlert("ops!", "", "Ocorreu um erro, por favor tente novamente");
+          console.log(this.dialogService.CONSOLE_TAG, err);
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
           });
         });
     }
   }
 
   cadastre_se() {
-    console.log("Cadastrar-se");
     this.navCtrl.navigateForward('/cadastrar-usuario');
   }
 
   esqueci_senha() {
-    console.log("Esqueci minha senha");
     this.navCtrl.navigateForward('/esqueci-senha');
   }
 
   openLinkExterno(local) {
-    console.log("local",local)
     window.open(local);
-  }
-
-  async presentAlert(title, subTitle, mensage) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subTitle,
-      message: mensage,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message
-    });
-    await this.loading.present();    
   }
 }

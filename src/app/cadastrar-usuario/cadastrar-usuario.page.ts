@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {  IonInput, AlertController, NavController, LoadingController } from '@ionic/angular';
-
+import {  IonInput, NavController } from '@ionic/angular';
 import { AutenticacaoService } from '../services/autenticacao.service'
+import { DialogService } from './../services/ui/dialog.service';
+import { ViewService } from './../services/ui/view.service';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -27,92 +28,48 @@ export class CadastrarUsuarioPage implements OnInit {
       senha: "",
       confirmarSenha: ""
   }
-
-  loading: any;
   
-  constructor(public navCtrl: NavController, private alertController: AlertController, public AutenticacaoService: AutenticacaoService, public loadingController: LoadingController) { }
+  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, private dialogService: DialogService, private viewService: ViewService) { }
 
   ngOnInit() {
   }
 
-  isValidEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
+  cadastrar() {
 
-   isValidCpf(cpf) {
-    if (cpf === null) return false;
-    cpf = cpf.toString().trim().replace(/\D/g, '').replace('.', '').replace('-', '-');
-    if(cpf.toString().length != 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-    var result = true;
-    [9,10].forEach(function(j){
-        var soma = 0, r;
-        cpf.split(/(?=)/).splice(0,j).forEach(function(e, i){
-            soma += parseInt(e) * ((j+2)-(i+1));
-        });
-        r = soma % 11;
-        r = (r <2)?0:11-r;
-        if(r != cpf.substring(j, j+1)) result = false;
-    });
-    return result;
-}
-
-  cadastrar(){
-
-    if(this.formCadastro.nome===""){  this.inputFirstName.setFocus(); }
-    else if(this.formCadastro.sobrenome===""){  this.inputLastName.setFocus(); }
-    else if(!this.isValidCpf(this.formCadastro.cpf)){  this.inputCpf.setFocus(); }
-    else if(!this.isValidEmail(this.formCadastro.email)){  this.inputEmail.setFocus(); }
-    else if(this.formCadastro.senha===""){  this.inputPassword.setFocus(); }
-    else if(this.formCadastro.confirmarSenha===""){  this.inputConfirmPassword.setFocus(); }
-    else if(this.formCadastro.senha!==this.formCadastro.confirmarSenha) {
-      this.inputPassword.setFocus();
-      this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem."); 
-    } else if(this.formCadastro.accept===false){  
-        this.presentAlert("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
+    if(this.formCadastro.nome === "") { this.inputFirstName.setFocus(); }
+    else if(this.formCadastro.sobrenome === "") { this.inputLastName.setFocus(); }
+    else if(!this.viewService.isValidCpf(this.formCadastro.cpf)) { this.inputCpf.setFocus(); }
+    else if(!this.viewService.isValidEmail(this.formCadastro.email)) { this.inputEmail.setFocus(); }
+    else if(this.formCadastro.senha === "") { this.inputPassword.setFocus(); }
+    else if(this.formCadastro.confirmarSenha === "") { this.inputConfirmPassword.setFocus(); }
+    else if(this.formCadastro.senha !== this.formCadastro.confirmarSenha) {
+      this.inputConfirmPassword.setFocus();
+      this.dialogService.showDialog("Senha", "", "A senha e a confirmação de senha não coincidem."); 
+    } else if(this.formCadastro.accept === false) {  
+      this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
     } else {
-      console.log("formCadastro",this.formCadastro)
-      this.presentLoading("Efetuando cadastro, aguarde...");
-      
-      this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/signup", JSON.stringify(this.formCadastro))
+      this.dialogService.showLoading("Efetuando cadastro, aguarde...");
+      this.autenticacaoService.post(this.autenticacaoService.URL_CADASTRAR, JSON.stringify(this.formCadastro))
         .subscribe( result => {
               let retorno = result.json();
               if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {
-                this.loading.dismiss().then(() => {
-                  this.presentAlert("Cadastro", "", "Cadastro Efetuado com Sucesso.", () => {
+                this.dialogService.hideLoading(() => {
+                  this.dialogService.showDialog("Cadastro", "", "Cadastro Efetuado com Sucesso.", [{text: 'OK', handler: () => {
                     this.navCtrl.navigateRoot('/login');
-                  })
+                  }}])
                 });
               } else {
-                this.loading.dismiss().then(() => {
-                  this.presentAlert("Erro", "", "Erro ao cadastrar usuário");
+                this.dialogService.hideLoading(() => {
+                  this.dialogService.showDialog(this.dialogService.ERROR, "", "Erro ao cadastrar usuário");
                 });
               }
               
-        }, err =>{
-          console.log("Erro na requisição: ", err);
-          this.loading.dismiss().then(() => {
-            this.presentAlert("ops!", "", "Ocorreu um erro, por favor tente novamente");
+        }, err => {
+          console.log(this.dialogService.CONSOLE_TAG, err);
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
           });
         });
     }
-  }
-
-  async presentAlert(title, subTitle, message, okCompletion = null) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subTitle,
-      message: message,
-      buttons: [{text: 'OK', handler: okCompletion}]
-    });
-
-    await alert.present();
-  }
-
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message
-    });
-    await this.loading.present();    
   }
 }

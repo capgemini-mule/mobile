@@ -1,8 +1,7 @@
+import { FavoriteService } from './../services/favorite.service';
 import { Component } from '@angular/core';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
-
-import { AutenticacaoService } from '../services/autenticacao.service'
+import { NavController } from '@ionic/angular';
+import { AutenticacaoService } from '../services/autenticacao.service';
 
 @Component({
   selector: 'app-tab2',
@@ -12,80 +11,37 @@ import { AutenticacaoService } from '../services/autenticacao.service'
 export class Tab2Page {
 
   not_found: any = false;
-  loading: any;
-
   lista_servicos: any = [];
 
-  constructor(public navCtrl: NavController, public alertController: AlertController, private storage: Storage, public AutenticacaoService: AutenticacaoService, public loadingController: LoadingController) {
+  constructor(public navCtrl: NavController, private favoriteService: FavoriteService,
+    private autenticacaoService: AutenticacaoService) {
     
   }
 
-  ngAfterViewInit() {
+  ionViewWillEnter() {
     this.getFavoritesServices()
   }
 
   getFavoritesServices() {
-    this.storage.get('servicos_favoritos').then((favoritesString) => {
-      let favorites = JSON.parse(favoritesString)
-      if (favorites !== null && favorites.length > 0) {
-        this.lista_servicos = favorites
-        if (this.lista_servicos.length === 0) {
-          this.notFound();
-        }
+    this.favoriteService.getFavorites().then(favorites => {
+      this.lista_servicos = favorites
+      if (this.lista_servicos.length === 0) {
+        this.notFound();
+      } else {
+        this.not_found = false
       }
     })
-  }
-
-  async logoff() {
-    const alert = await this.alertController.create({
-      header: 'Sair',
-      message: 'Tem certeza que deseja sair da sua conta?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Cancelando logoff');
-          }
-        }, {
-          text: 'Sair',
-          handler: () => {
-            this.presentLoading("Saindo...");
-            this.AutenticacaoService.post("http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout").subscribe( result => {
-              this.clearTokenAndLeave()
-            }, err =>{
-              console.log("Erro na requisição: ", err);
-              this.clearTokenAndLeave()    
-            });
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  clearTokenAndLeave() {
-    this.storage.set('access_token', null).then(() => {
-        this.loading.dismiss().then(() => {
-          this.navCtrl.navigateRoot('/login');
-       });
-    });
   }
 
   notFound() {
     this.not_found = true;
   }
 
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message
-    });
-    await this.loading.present();    
-  }
-
   openFavorite(item) {
    
+  }
+
+  logoff() {
+    this.autenticacaoService.logoff()
   }
 }

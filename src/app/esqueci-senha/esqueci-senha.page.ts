@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {  IonInput, AlertController, NavController, LoadingController } from '@ionic/angular';
+import {  IonInput, NavController } from '@ionic/angular';
+import { DialogService } from './../services/ui/dialog.service';
+import { ViewService } from './../services/ui/view.service';
 
 @Component({
   selector: 'app-esqueci-senha',
@@ -14,53 +16,24 @@ export class EsqueciSenhaPage implements OnInit {
       email: ""
   }
 
-loading: any;
-
-  constructor(public navCtrl: NavController, private alertController: AlertController, public loadingController: LoadingController) { }
+  constructor(public navCtrl: NavController, private dialogService: DialogService, private viewService: ViewService) { }
 
   ngOnInit() {
   }
 
-
-  isValidEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
   esqueci_senha() {
 
-    if(!this.isValidEmail(this.formEsqueci.email)) {  
-      this.presentAlert("Atenção", "", "Preencha um e-mail válido.");
+    if(!this.viewService.isValidEmail(this.formEsqueci.email)) {  
+      this.dialogService.showDialog("Atenção", "", "Preencha um e-mail válido.");
     } else {
-      
-      this.presentLoading("Efetuando solicitação de nova senha, aguarde...");
-      
-      setTimeout( () => {
-        this.loading.dismiss().then(() => {
-          this.presentAlert("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", () => {
+      this.dialogService.showLoading("Efetuando solicitação de nova senha, aguarde...");
+      setTimeout(() => {
+        this.dialogService.hideLoading(() => {
+          this.dialogService.showDialog("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", [{text: 'OK', handler: () => {
             this.navCtrl.navigateRoot('/login');
-          })
+          }}])
         });
       }, 2000);
     }
   }
-
-  async presentAlert(title, subTitle, message, okCompletion = null) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subTitle,
-      message: message,
-      buttons: [{text: 'OK', handler: okCompletion}]
-    });
-
-    await alert.present();
-  }
-
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message
-    });
-    await this.loading.present();    
-  }
-
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, IonInput, AlertController, NavController, LoadingController  } from '@ionic/angular';
+import { ModalController, IonInput } from '@ionic/angular';
+import { DialogService } from '../../services/ui/dialog.service';
+import { ViewService } from '../../services/ui/view.service';
 
 @Component({
   selector: 'app-alterar-senha',
@@ -18,9 +20,7 @@ export class AlterarSenhaPage implements OnInit {
     confirmPassword: ""
   }
 
-  loading: any;
-
-  constructor(public modalController: ModalController, private alertController: AlertController, public loadingController: LoadingController) { }
+  constructor(public modalController: ModalController, private dialogService: DialogService, private viewService: ViewService) { }
 
   ngOnInit() {
   }
@@ -29,40 +29,21 @@ export class AlterarSenhaPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  async presentAlert(title, subTitle, message, okCompletion = null) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subTitle,
-      message: message,
-      buttons: [{text: 'OK', handler: okCompletion}]
-    });
-
-    await alert.present();
-  }
-
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message,
-      duration: 2000
-    });
-    await this.loading.present();    
-  }
-
   alterar_senha() {
 
-    if(this.formAlterarSenha.old_password===""){  this.inputoldpassword.setFocus(); }
-    else if(this.formAlterarSenha.password===""){  this.inputpassword.setFocus(); }
-    else if(this.formAlterarSenha.confirmPassword===""){  this.inputconfirmPassword.setFocus(); }
-    else if(this.formAlterarSenha.password!==this.formAlterarSenha.confirmPassword) {
-      this.presentAlert("Senha", "", "A senha e a confirmação de senha não coincidem.");
-      this.inputpassword.setFocus();
+    if(this.formAlterarSenha.old_password === "") { this.inputoldpassword.setFocus(); }
+    else if(this.formAlterarSenha.password === "") { this.inputpassword.setFocus(); }
+    else if(this.formAlterarSenha.confirmPassword === "") { this.inputconfirmPassword.setFocus(); }
+    else if(this.formAlterarSenha.password !== this.formAlterarSenha.confirmPassword) {
+      this.dialogService.showDialog("Senha", "", "A senha e a confirmação de senha não coincidem.");
+      this.inputconfirmPassword.setFocus();
   } else {
-      this.presentLoading("Efetuando alteração de senha, aguarde...");
+    this.dialogService.showLoading("Efetuando alteração de senha, aguarde...");
       setTimeout( () => {
-        this.loading.dismiss().then(() => {
-          this.presentAlert("Alterar Senha", "", "senha alterada com suscesso", () => {
+        this.dialogService.hideLoading(() => {
+          this.dialogService.showDialog("Alterar Senha", "", "senha alterada com suscesso", [{text: 'OK', handler: () => {
               this.closeModal();
-          })
+          }}])
         })
       }, 2000);
     }

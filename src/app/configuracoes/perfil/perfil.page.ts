@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, LoadingController, AlertController  } from '@ionic/angular';
-
+import { ModalController } from '@ionic/angular';
+import { DialogService } from '../../services/ui/dialog.service';
 import { AutenticacaoService } from '../../services/autenticacao.service'
 
 @Component({
@@ -10,7 +10,6 @@ import { AutenticacaoService } from '../../services/autenticacao.service'
 })
 export class PerfilPage implements OnInit {
 
-  loading: any;
   dadosUsuario: any = {
       nome: "",
       sobrenome: "",
@@ -18,7 +17,7 @@ export class PerfilPage implements OnInit {
       email: ""
   }
 
-  constructor(public modalController: ModalController, public AutenticacaoService: AutenticacaoService, private alertController: AlertController, public loadingController: LoadingController) {
+  constructor(public modalController: ModalController, public autenticacaoService: AutenticacaoService, private dialogService: DialogService) {
 
   }
 
@@ -35,37 +34,18 @@ export class PerfilPage implements OnInit {
 
   iniciaDadosUsuario() {
 
-    this.presentLoading("Carregando dados do usuário, aguarde...");
-
-    this.AutenticacaoService.get("http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/email")
+    this.dialogService.showLoading("Carregando dados do usuário, aguarde...");
+    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL)
         .subscribe( result => {
-          this.loading.dismiss().then(() => {
+          this.dialogService.hideLoading(() => {
               this.dadosUsuario = result.json();
           })          
         }, err => {
           // this.dadosUsuario = { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
-          console.log("Erro na requisição: ", err);
-          this.loading.dismiss().then(() => {
-            this.presentAlert("ops!", "", "Ocorreu um erro, por favor tente novamente");
+          console.log(this.dialogService.CONSOLE_TAG, err);
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
           });
         });
-  }
-
-  async presentAlert(title, subTitle, message, okCompletion = null) {
-    const alert = await this.alertController.create({
-      header: title,
-      subHeader: subTitle,
-      message: message,
-      buttons: [{text: 'OK', handler: okCompletion}]
-    });
-
-    await alert.present();
-  }
-
-  async presentLoading(message) {
-    this.loading = await this.loadingController.create({
-      message: message
-    });
-    await this.loading.present();    
   }
 }
