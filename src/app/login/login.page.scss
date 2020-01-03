@@ -13,6 +13,10 @@
     border:none;
 }
 
+ion-item{
+    --highlight-background: none;
+}
+
 ion-input{ 
     --background: #FFFFFF;
     background: #FFFFFF;    
@@ -23,10 +27,6 @@ ion-input{
     --padding-bottom: 12px; 
     margin-bottom: 5px;
     border-radius: 3px;
-}
-
-ion-item{
-    --inner-border-width: 0;    
 }
 
 .label-ios, .label-md{

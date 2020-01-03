@@ -29,7 +29,11 @@ const routes: Routes = [
   {
     path: 'texto-geral',
     loadChildren: () => import('./configuracoes/texto-geral/texto-geral.module').then( m => m.TextoGeralPageModule)
+  },  {
+    path: 'inscricao-matricula',
+    loadChildren: () => import('./inscricao-matricula/inscricao-matricula.module').then( m => m.InscricaoMatriculaPageModule)
   }
+
 ];
 @NgModule({
   imports: [

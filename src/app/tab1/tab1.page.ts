@@ -27,7 +27,7 @@ export class Tab1Page {
 
   ngAfterViewInit() {
     this.dialogService.showLoading("Carregando lista de serviços, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.ULR_SERVICOS)
+    this.autenticacaoService.get(this.autenticacaoService.URL_SERVICOS)
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
               this.lista_servicos = result.json(); 
@@ -40,10 +40,6 @@ export class Tab1Page {
             this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
           });
       });
-  }
-
-  ionViewWillEnter() {
-    
   }
 
   filtrarServicos(itemSearch) {
@@ -71,7 +67,6 @@ export class Tab1Page {
   }
 
   like(item) {
-    //this.presentLoading("Curtida sendo realizada... :-)");
   }
 
   favorito(item) {
@@ -86,7 +81,7 @@ export class Tab1Page {
   }
 
   openService(item) {
-    
+    this.navCtrl.navigateForward('/inscricao-matricula');
   }
 
   logoff() {

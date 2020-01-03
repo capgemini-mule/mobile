@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.storage.get('access_token').then((val) => {
+    this.storage.get(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN).then((val) => {
       if(val != null) {
         this.navCtrl.navigateRoot('/tabs/tab1');
       }
@@ -37,14 +37,15 @@ export class LoginPage implements OnInit {
         this.dialogService.showLoading("Validando acesso, aguarde...")
         this.autenticacaoService.post(this.autenticacaoService.URL_LOGIN, JSON.stringify(this.formLogin)).subscribe( result => {
               let autenticacao = result.json()
-              this.dialogService.hideLoading(() => {
-                if(autenticacao.access_token) {
-                  this.storage.set('access_token', autenticacao);
-                  this.navCtrl.navigateRoot('/tabs/tab1');
-                } else {
+            
+              if(autenticacao.access_token) {
+                this.storage.set(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN, autenticacao.access_token)
+                this.dadosUsuario()
+              } else {
+                this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog(this.dialogService.WARNING, "", "Usuário ou senha inválidos");
-                }
-              })
+                })
+              }
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
@@ -52,6 +53,21 @@ export class LoginPage implements OnInit {
           });
         });
     }
+  }
+
+  dadosUsuario() {
+    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL)
+        .subscribe( result => {
+          this.dialogService.hideLoading(() => {
+            this.autenticacaoService.usuario = result.json()
+            this.navCtrl.navigateRoot('/tabs/tab1');
+          })          
+        }, err => {
+          console.log(this.dialogService.CONSOLE_TAG, err);
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+          });
+        });
   }
 
   cadastre_se() {

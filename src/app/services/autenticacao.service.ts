@@ -9,11 +9,25 @@ import { NavController, AlertController } from '@ionic/angular';
 })
 export class AutenticacaoService {
 
+  readonly STORAGE_KEY_ACCESS_TOKEN = "access_token"
+
   readonly URL_LOGIN: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/token"
   readonly URL_LOGOUT: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout"
   readonly URL_CADASTRAR: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/signup"
   readonly URL_PERFIL: string = "http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/email"
-  readonly ULR_SERVICOS: string = "http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos"
+  readonly URL_SERVICOS: string = "http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos"
+  readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/series/{dataNascimento}"
+  readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
+  readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
+
+  // { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
+  public usuario: any = {
+    nome: "",
+    sobrenome: "",
+    cpf: "",
+    email: "",
+    data_nascimento: "01-01-2000"
+  }
 
   constructor(public http: Http, private storage: Storage, 
     private dialogService: DialogService,
@@ -53,7 +67,7 @@ export class AutenticacaoService {
   }
 
   clearTokenAndLeave() {
-    this.storage.set('access_token', null).then(() => {
+    this.storage.set(this.STORAGE_KEY_ACCESS_TOKEN, null).then(() => {
       this.dialogService.hideLoading(() => {
           this.navCtrl.navigateRoot('/login');
        });
@@ -61,7 +75,7 @@ export class AutenticacaoService {
   }
 
   private accessToken() {
-    this.storage.get('access_token').then((val) => {
+    return this.storage.get(this.STORAGE_KEY_ACCESS_TOKEN).then((val) => {
       return val
     })
   }
@@ -79,12 +93,12 @@ export class AutenticacaoService {
 
   public post(link="", payload="") {
 
-        var headers = new Headers();
-        headers.append("Accept", 'application/json');
-        headers.append('Content-Type', 'application/json' );
-        headers.append("Authorization", 'Bearer ' + this.accessToken()); 
-        const requestOptions = new RequestOptions({ headers: headers });
+    var headers = new Headers();
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/json' );
+    headers.append("Authorization", 'Bearer ' + this.accessToken()); 
+    const requestOptions = new RequestOptions({ headers: headers });
 
-        return this.http.post(link, payload, requestOptions);
+    return this.http.post(link, payload, requestOptions);
   }
 }

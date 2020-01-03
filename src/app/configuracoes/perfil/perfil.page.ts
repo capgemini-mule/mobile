@@ -10,13 +10,6 @@ import { AutenticacaoService } from '../../services/autenticacao.service'
 })
 export class PerfilPage implements OnInit {
 
-  dadosUsuario: any = {
-      nome: "",
-      sobrenome: "",
-      cpf: "",
-      email: ""
-  }
-
   constructor(public modalController: ModalController, public autenticacaoService: AutenticacaoService, private dialogService: DialogService) {
 
   }
@@ -38,10 +31,9 @@ export class PerfilPage implements OnInit {
     this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL)
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
-              this.dadosUsuario = result.json();
+            this.autenticacaoService.usuario = result.json()
           })          
         }, err => {
-          // this.dadosUsuario = { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
             this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
