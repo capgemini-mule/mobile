@@ -61,12 +61,9 @@ export class AutenticacaoService {
   }
 
   private accessToken() {
-    this.storage.get('userProfile').then((val) => {
-      if(val != null) {
-        return val;
-      }
-    });
-    return "";
+    this.storage.get('access_token').then((val) => {
+      return val
+    })
   }
 
   public get(link="") {

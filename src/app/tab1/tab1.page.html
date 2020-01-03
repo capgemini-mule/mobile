@@ -48,7 +48,7 @@
       
           <ion-item-options side="end">
             <ion-item-option (click)="favorito(servico)">
-            <ion-icon slot="icon-only" name="star" color='secondary'></ion-icon>
+            <ion-icon slot="icon-only" name="star" [color]="iconColor(servico)"></ion-icon>
             </ion-item-option>
           </ion-item-options>
       </ion-item-sliding>

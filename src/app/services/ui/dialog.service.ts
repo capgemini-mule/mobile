@@ -26,9 +26,11 @@ export class DialogService {
       message = "Carregando"
     }
     if (this.loading) {
+      console.log('loading', 'dismiss show')
       await this.loading.dismiss()
       this.loading = null
     }
+    console.log('loading', 'create')
     this.loading = await this.loadingController.create({
       message: message
     });
@@ -36,6 +38,7 @@ export class DialogService {
   }
 
   async hideLoading(callback = null) {
+    console.log('loading', 'dismiss show')
     if (this.loading) {
       await this.loading.dismiss()
       this.loading = null

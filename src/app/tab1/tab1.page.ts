@@ -22,6 +22,7 @@ export class Tab1Page {
   }
 
   ngOnInit() {
+    
   }
 
   ngAfterViewInit() {
@@ -39,6 +40,10 @@ export class Tab1Page {
             this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
           });
       });
+  }
+
+  ionViewWillEnter() {
+    
   }
 
   filtrarServicos(itemSearch) {
@@ -74,14 +79,12 @@ export class Tab1Page {
   }
 
   iconColor(item) {
-    return this.favoriteService.isFavorite(item).then(success => {
-      if(success) {
-        return 'secondary'
-      }
-      return 'primary'
-    })
+     if (this.favoriteService.isFavoriteLocal(item)) {
+      return 'warning'
+     }
+     return 'light'
   }
-  
+
   openService(item) {
     
   }

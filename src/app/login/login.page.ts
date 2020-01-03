@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
 
   ngAfterViewInit() {
     this.storage.get('access_token').then((val) => {
-      if(val!=null) {
+      if(val != null) {
         this.navCtrl.navigateRoot('/tabs/tab1');
       }
     });

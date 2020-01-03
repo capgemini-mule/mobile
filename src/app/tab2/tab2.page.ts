@@ -23,14 +23,12 @@ export class Tab2Page {
   }
 
   getFavoritesServices() {
-    this.favoriteService.getFavorites().then(favorites => {
-      this.lista_servicos = favorites
-      if (this.lista_servicos.length === 0) {
-        this.notFound();
-      } else {
-        this.not_found = false
-      }
-    })
+    this.lista_servicos = this.favoriteService.favorites
+    if (this.lista_servicos.length === 0) {
+      this.notFound()
+    } else {
+      this.not_found = false
+    }
   }
 
   notFound() {
