@@ -1,3 +1,4 @@
+import { AutenticacaoService } from './autenticacao.service';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
@@ -6,15 +7,19 @@ import { Storage } from '@ionic/storage';
 })
 export class FavoriteService {
 
-  readonly STORAGE_KEY_FAVORITES: string = "servicos_favoritos"
+  readonly STORAGE_KEY_FAVORITES: string = "servicos_favoritos_"
   public favorites: any = [];
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private autenticacaoService: AutenticacaoService) {
     this.updateLocalVariable()
   }
 
+  private userStorageKey() {
+    return this.STORAGE_KEY_FAVORITES + this.autenticacaoService.usuario.cpf
+  }
+
   private async getFavorites() {
-    let favoritesString = await this.storage.get(this.STORAGE_KEY_FAVORITES)
+    let favoritesString = await this.storage.get(this.userStorageKey())
     if (favoritesString !== null && favoritesString !== "") {
       let favorites = JSON.parse(favoritesString)
       this.favorites = favorites
@@ -56,7 +61,7 @@ export class FavoriteService {
         } else {
           favorites.push(item)
         }
-        this.storage.set(this.STORAGE_KEY_FAVORITES, JSON.stringify(favorites))
+        this.storage.set(this.userStorageKey(), JSON.stringify(favorites))
         this.favorites = favorites
       })
     })

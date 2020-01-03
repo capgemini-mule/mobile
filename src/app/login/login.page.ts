@@ -17,13 +17,19 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    
+    //this.clearStorage()
+  }
+
+  clearStorage() {
+    this.storage.clear()
   }
 
   ngAfterViewInit() {
     this.storage.get(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN).then((val) => {
+      this.autenticacaoService.access_token = val
       if(val != null) {
-        this.navCtrl.navigateRoot('/tabs/tab1');
+        this.dialogService.showLoading("Validando acesso, aguarde...")
+        this.dadosUsuario()
       }
     });
   }
@@ -39,8 +45,10 @@ export class LoginPage implements OnInit {
               let autenticacao = result.json()
             
               if(autenticacao.access_token) {
-                this.storage.set(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN, autenticacao.access_token)
-                this.dadosUsuario()
+                this.storage.set(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN, autenticacao.access_token).then(() => {
+                  this.autenticacaoService.access_token = autenticacao.access_token
+                  this.dadosUsuario()
+                })
               } else {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog(this.dialogService.WARNING, "", "Usuário ou senha inválidos");

@@ -36,7 +36,7 @@ export class Tab2Page {
   }
 
   openFavorite(item) {
-   
+    this.navCtrl.navigateForward('/inscricao-matricula');
   }
 
   logoff() {

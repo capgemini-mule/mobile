@@ -22,7 +22,7 @@ export class InscricaoMatriculaPage implements OnInit {
   }
 
   getSeries() {
-    this.dialogService.showLoading("Carregando séries");
+    this.dialogService.showLoading("Carregando séries...");
     this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_SERIES.replace('{dataNascimento}', this.autenticacaoService.usuario.data_nascimento))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
@@ -38,7 +38,7 @@ export class InscricaoMatriculaPage implements OnInit {
   }
 
   getEscolas() {
-    this.dialogService.showLoading("Carregando escolas");
+    this.dialogService.showLoading("Carregando escolas...");
     this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_ESCOLAS.replace('{codSerie}', '1'))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {

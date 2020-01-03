@@ -29,6 +29,8 @@ export class AutenticacaoService {
     data_nascimento: "01-01-2000"
   }
 
+  public access_token = ""
+
   constructor(public http: Http, private storage: Storage, 
     private dialogService: DialogService,
     public navCtrl: NavController,
@@ -74,31 +76,19 @@ export class AutenticacaoService {
     });
   }
 
-  private accessToken() {
-    return this.storage.get(this.STORAGE_KEY_ACCESS_TOKEN).then((val) => {
-      return val
-    })
-  }
-
-  public get(link="") {
-
+  private getDefaultRequestOptions() {
     var headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json' );   
-    headers.append("Authorization", 'Bearer ' + this.accessToken());
-    const requestOptions = new RequestOptions({ headers: headers });
-    
-    return this.http.get(link, requestOptions); 
+    headers.append("Authorization", 'Bearer ' + this.access_token);
+    return new RequestOptions({ headers: headers });
+  }
+
+  public get(link="") {    
+    return this.http.get(link, this.getDefaultRequestOptions()); 
   }
 
   public post(link="", payload="") {
-
-    var headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/json' );
-    headers.append("Authorization", 'Bearer ' + this.accessToken()); 
-    const requestOptions = new RequestOptions({ headers: headers });
-
-    return this.http.post(link, payload, requestOptions);
+    return this.http.post(link, payload, this.getDefaultRequestOptions());
   }
 }
