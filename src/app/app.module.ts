@@ -15,6 +15,8 @@ import { TextoGeralPageModule } from './configuracoes/texto-geral/texto-geral.mo
 import { PerfilPageModule } from './configuracoes/perfil/perfil.module';
 import { AlterarSenhaPageModule } from './configuracoes/alterar-senha/alterar-senha.module';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -31,7 +33,8 @@ import { AlterarSenhaPageModule } from './configuracoes/alterar-senha/alterar-se
 
     TextoGeralPageModule,
     PerfilPageModule,
-    AlterarSenhaPageModule 
+    AlterarSenhaPageModule,
+    IonicSelectableModule
   ],
   providers: [
     StatusBar,

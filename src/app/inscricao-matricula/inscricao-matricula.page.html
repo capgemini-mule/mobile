@@ -14,13 +14,20 @@
     </ion-card-header>
 
     <ion-list class="ion-padding">
+      <ion-item>
+        <ion-label>Séries</ion-label>
+        <ionic-selectable itemValueField="codSerie" itemTextField="descSerie" [items]="series" 
+        [canSearch]="false" (onChange)="serieChange($event)"></ionic-selectable>
+      </ion-item>
 
-        <ion-item>
-            
-        </ion-item>
-        <ion-item> 
-                
-        </ion-item>
+      <ion-item>
+        <ion-label>Escolas</ion-label>
+        <ionic-selectable itemValueField="codEscola" itemTextField="nomeEscola" [items]="escolas" 
+        [canSearch]="false" (onChange)="escolaChange($event)"></ionic-selectable>
+      </ion-item>
+      
+      <ion-button expand="full" class="bt_cadastro" (click)="inscrever()">Inscrever</ion-button>
+
     </ion-list> 
 
 </ion-content>

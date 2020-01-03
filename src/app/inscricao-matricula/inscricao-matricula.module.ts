@@ -8,12 +8,15 @@ import { InscricaoMatriculaPageRoutingModule } from './inscricao-matricula-routi
 
 import { InscricaoMatriculaPage } from './inscricao-matricula.page';
 
+import { IonicSelectableModule } from 'ionic-selectable';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InscricaoMatriculaPageRoutingModule
+    InscricaoMatriculaPageRoutingModule,
+    IonicSelectableModule    
   ],
   declarations: [InscricaoMatriculaPage]
 })
