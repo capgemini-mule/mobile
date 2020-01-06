@@ -13,10 +13,12 @@ import { IonicSelectableComponent } from 'ionic-selectable';
   styleUrls: ['./inscricao-matricula.page.scss'],
 })
 export class InscricaoMatriculaPage implements OnInit {
-  //series: Serie[] = [];
-  //escolas:Escola[] = [];
-  series: Serie[] = [{codSerie: "1", descSerie: "1º ano do Ensino Fundamental"}, {codSerie: "2", descSerie: "2º ano do Ensino Fundamental"}];
-  escolas:Escola[] = [{codEscola: "1", nomeEscola: "Escola 1", endEscola: "Endereco 1"},{codEscola: "2", nomeEscola: "Escola 2", endEscola: "Endereco 2"}];
+  serie: Serie = new Serie()
+  escola: Escola = new Escola()
+  series: Serie[] = [];
+  escolas:Escola[] = [];
+  //series: Serie[] = [{codSerie: "1", descSerie: "1º ano do Ensino Fundamental"}, {codSerie: "2", descSerie: "2º ano do Ensino Fundamental"}];
+  //escolas:Escola[] = [{codEscola: "1", nomeEscola: "Escola 1", endEscola: "Endereco 1"},{codEscola: "2", nomeEscola: "Escola 2", endEscola: "Endereco 2"}];
   request: RequestInscricaoMatricula = new RequestInscricaoMatricula()
   
   constructor(private autenticacaoService: AutenticacaoService, 
@@ -34,8 +36,8 @@ export class InscricaoMatriculaPage implements OnInit {
     this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_SERIES.replace('{dataNascimento}', this.autenticacaoService.usuario.data_nascimento))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
-            let series = result.json()
-            console.log('log', series)
+            this.series = [ result.json() ]
+            console.log('log', this.series)
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
@@ -56,8 +58,8 @@ export class InscricaoMatriculaPage implements OnInit {
     this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_ESCOLAS.replace('{codSerie}', '1'))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
-            let escolas = result.json()
-            console.log('log', escolas)
+            this.escolas = result.json()
+            console.log('log', this.escolas)
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
@@ -73,9 +75,9 @@ export class InscricaoMatriculaPage implements OnInit {
   }
 
   checarIncricao() {
-    if (this.request.codSerie === null) {
+    if (this.request.codSerie === null || this.request.codSerie === "" || this.request.codSerie === undefined) {
       this.dialogService.showDialog("Matrícula", "", "Por favor, selecione uma série");
-    } else if (this.request.codEscola === null) {
+    } else if (this.request.codEscola === null || this.request.codEscola === "" || this.request.codEscola === undefined) {
       this.dialogService.showDialog("Matrícula", "", "Por favor, selecione uma escola");
     } else {
       this.inscrever()
