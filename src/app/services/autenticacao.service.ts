@@ -1,3 +1,4 @@
+import { Usuario } from './../types/Usuario';
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Storage } from '@ionic/storage';
@@ -21,13 +22,7 @@ export class AutenticacaoService {
   readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
 
   // { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
-  public usuario: any = {
-    nome: "",
-    sobrenome: "",
-    cpf: "",
-    email: "",
-    data_nascimento: "01-01-2000"
-  }
+  public usuario = new Usuario()
 
   public access_token = ""
 

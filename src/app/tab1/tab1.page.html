@@ -31,6 +31,10 @@
         <ion-card-title>Menu</ion-card-title>
     </ion-card-header>
 
+    <ion-item>
+      <ion-label>Olá, {{this.autenticacaoService.usuario.nome}}</ion-label>
+    </ion-item>
+
     <ion-list lines="none" *ngIf="not_found==false">
       
       <ion-item-sliding *ngFor="let servico of lista_servicos">

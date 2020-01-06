@@ -17,7 +17,7 @@ export class Tab1Page {
   lista_servicos: any = [];
   lista_servicos_completa: any = []
 
-  constructor(public navCtrl: NavController, private autenticacaoService: AutenticacaoService, 
+  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, 
     private dialogService: DialogService, private favoriteService: FavoriteService) {
   }
 
