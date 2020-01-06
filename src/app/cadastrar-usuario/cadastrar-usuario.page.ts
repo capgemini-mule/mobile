@@ -29,7 +29,9 @@ export class CadastrarUsuarioPage implements OnInit {
       confirmarSenha: ""
   }
   
-  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, private dialogService: DialogService, private viewService: ViewService) { }
+  constructor(public navCtrl: NavController, 
+    public autenticacaoService: AutenticacaoService, 
+    private dialogService: DialogService, private viewService: ViewService) { }
 
   ngOnInit() {
   }

@@ -14,7 +14,7 @@ export class ViewService {
 
   public isValidCpf(cpf) {
     if (cpf === null) return false;
-    cpf = cpf.toString().trim().replace(/\D/g, '').replace('.', '').replace('-', '-');
+    cpf = cpf.toString().trim().replace(/\D/g, '')
     if(cpf.toString().length != 11 || /^(\d)\1{10}$/.test(cpf)) return false;
     var result = true;
     [9,10].forEach(function(j){

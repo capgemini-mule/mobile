@@ -1,3 +1,4 @@
+import { MaskDirectiveModule } from './../directives/Mask/mask.directive';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +14,8 @@ import { CadastrarUsuarioPage } from './cadastrar-usuario.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CadastrarUsuarioPageRoutingModule
+    CadastrarUsuarioPageRoutingModule,
+    MaskDirectiveModule
   ],
   declarations: [CadastrarUsuarioPage]
 })
