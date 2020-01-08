@@ -1,10 +1,9 @@
+import { AutenticacaoService } from './../services/autenticacao.service';
 import { Escola } from './../types/Escola';
 import { Serie } from './../types/Serie';
 import {RequestInscricaoMatricula} from './../types/RequestInscricaoMatricula';
-import { NavController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { DialogService } from './../services/ui/dialog.service';
-import { AutenticacaoService } from '../services/autenticacao.service';
 import { IonicSelectableComponent } from 'ionic-selectable';
 
 @Component({
@@ -22,7 +21,7 @@ export class InscricaoMatriculaPage implements OnInit {
   request: RequestInscricaoMatricula = new RequestInscricaoMatricula()
   
   constructor(private autenticacaoService: AutenticacaoService, 
-    private dialogService: DialogService, public navCtrl: NavController) { }
+    private dialogService: DialogService) { }
 
   ngOnInit() {
   }
@@ -33,7 +32,7 @@ export class InscricaoMatriculaPage implements OnInit {
 
   getSeries() {
     this.dialogService.showLoading("Carregando séries...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_SERIES.replace('{dataNascimento}', this.autenticacaoService.usuario.data_nascimento))
+    this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_SERIES.replace('{dataNascimento}', AutenticacaoService.usuario.dataNascimento))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
             this.series = [ result.json() ]
@@ -91,7 +90,7 @@ export class InscricaoMatriculaPage implements OnInit {
       if (resposta.numeroInscricao) {
         this.dialogService.hideLoading(() => {
           this.dialogService.showDialog("Matrícula", "", "Matrícula Efetuada com Sucesso!", [{text: 'OK', handler: () => {
-            this.navCtrl.navigateBack('/tabs/tab1')
+            this.autenticacaoService.goHomeAsRoot()
           }}])
         })
       } else {

@@ -25,11 +25,11 @@ export class LoginPage implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.storage.get(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN).then((val) => {
-      this.autenticacaoService.access_token = val
-      if(val != null) {
+    this.storage.get(this.autenticacaoService.STORAGE_KEY_USER).then((val) => {
+      if(val !== null && val.accessToken !== null) {
+        AutenticacaoService.usuario = val
         this.dialogService.showLoading("Validando acesso, aguarde...")
-        this.dadosUsuario()
+        this.dadosUsuario(AutenticacaoService.usuario.email, val.accessToken)
       }
     });
   }
@@ -43,12 +43,8 @@ export class LoginPage implements OnInit {
         this.dialogService.showLoading("Validando acesso, aguarde...")
         this.autenticacaoService.post(this.autenticacaoService.URL_LOGIN, JSON.stringify(this.formLogin)).subscribe( result => {
               let autenticacao = result.json()
-            
               if(autenticacao.access_token) {
-                this.storage.set(this.autenticacaoService.STORAGE_KEY_ACCESS_TOKEN, autenticacao.access_token).then(() => {
-                  this.autenticacaoService.access_token = autenticacao.access_token
-                  this.dadosUsuario()
-                })
+                this.dadosUsuario(this.formLogin.username, autenticacao.access_token)
               } else {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog(this.dialogService.WARNING, "", "Usuário ou senha inválidos");
@@ -63,12 +59,13 @@ export class LoginPage implements OnInit {
     }
   }
 
-  dadosUsuario() {
-    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL)
+  dadosUsuario(email: string, acessToken: string) {
+    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL.replace('{email}', email))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
-            this.autenticacaoService.usuario = result.json()
-            this.navCtrl.navigateRoot('/tabs/tab1');
+            AutenticacaoService.usuario = result.json()
+            AutenticacaoService.usuario.accessToken = acessToken
+            this.autenticacaoService.goHomeAsRoot()
           })          
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);

@@ -1,7 +1,7 @@
+import { AutenticacaoService } from './../../services/autenticacao.service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DialogService } from '../../services/ui/dialog.service';
-import { AutenticacaoService } from '../../services/autenticacao.service'
 
 @Component({
   selector: 'app-perfil',
@@ -28,10 +28,14 @@ export class PerfilPage implements OnInit {
   iniciaDadosUsuario() {
 
     this.dialogService.showLoading("Carregando dados do usuário, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL)
+    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL.replace('{email}', AutenticacaoService.usuario.email))
         .subscribe( result => {
           this.dialogService.hideLoading(() => {
-            this.autenticacaoService.usuario = result.json()
+            const accessToken = AutenticacaoService.usuario.accessToken
+            AutenticacaoService.usuario = result.json()
+            AutenticacaoService.usuario.accessToken = accessToken
+            this.autenticacaoService.setUser(AutenticacaoService.usuario)
+
           })          
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);

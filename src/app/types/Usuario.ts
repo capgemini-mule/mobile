@@ -4,7 +4,8 @@ export class Usuario {
     sobrenome: string;
     cpf: string;
     email: string;
-    data_nascimento: string;
+    dataNascimento: string;
+    accessToken: string;
     
     constructor() {
     }

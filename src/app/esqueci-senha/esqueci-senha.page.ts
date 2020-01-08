@@ -1,3 +1,4 @@
+import { AutenticacaoService } from './../services/autenticacao.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {  IonInput, NavController } from '@ionic/angular';
 import { DialogService } from './../services/ui/dialog.service';
@@ -16,7 +17,7 @@ export class EsqueciSenhaPage implements OnInit {
       email: ""
   }
 
-  constructor(public navCtrl: NavController, private dialogService: DialogService, private viewService: ViewService) { }
+  constructor(public navCtrl: NavController, private dialogService: DialogService, private viewService: ViewService, private autenticacaoService: AutenticacaoService) { }
 
   ngOnInit() {
   }
@@ -30,7 +31,7 @@ export class EsqueciSenhaPage implements OnInit {
       setTimeout(() => {
         this.dialogService.hideLoading(() => {
           this.dialogService.showDialog("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", [{text: 'OK', handler: () => {
-            this.navCtrl.navigateRoot('/login');
+            this.autenticacaoService.goToLogin()
           }}])
         });
       }, 2000);

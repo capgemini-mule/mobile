@@ -15,7 +15,7 @@ export class FavoriteService {
   }
 
   private userStorageKey() {
-    return this.STORAGE_KEY_FAVORITES + this.autenticacaoService.usuario.cpf
+    return this.STORAGE_KEY_FAVORITES + AutenticacaoService.usuario.cpf
   }
 
   private async getFavorites() {

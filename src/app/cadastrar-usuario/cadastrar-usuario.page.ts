@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {  IonInput, NavController } from '@ionic/angular';
+import {  IonInput } from '@ionic/angular';
 import { AutenticacaoService } from '../services/autenticacao.service'
 import { DialogService } from './../services/ui/dialog.service';
 import { ViewService } from './../services/ui/view.service';
@@ -29,8 +29,7 @@ export class CadastrarUsuarioPage implements OnInit {
       confirmarSenha: ""
   }
   
-  constructor(public navCtrl: NavController, 
-    public autenticacaoService: AutenticacaoService, 
+  constructor(public autenticacaoService: AutenticacaoService, 
     private dialogService: DialogService, private viewService: ViewService) { }
 
   ngOnInit() {
@@ -61,7 +60,7 @@ export class CadastrarUsuarioPage implements OnInit {
               if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog("Cadastro", "", "Cadastro Efetuado com Sucesso.", [{text: 'OK', handler: () => {
-                    this.navCtrl.navigateRoot('/login');
+                    this.autenticacaoService.goToLogin()
                   }}])
                 });
               } else {

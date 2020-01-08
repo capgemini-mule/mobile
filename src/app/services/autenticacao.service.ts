@@ -10,21 +10,20 @@ import { NavController, AlertController } from '@ionic/angular';
 })
 export class AutenticacaoService {
 
-  readonly STORAGE_KEY_ACCESS_TOKEN = "access_token"
+  readonly STORAGE_KEY_USER = "lastUser"
 
   readonly URL_LOGIN: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/token"
   readonly URL_LOGOUT: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout"
   readonly URL_CADASTRAR: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/signup"
-  readonly URL_PERFIL: string = "http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/email"
+  readonly URL_PERFIL: string = "http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/{email}"
   readonly URL_SERVICOS: string = "http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos"
   readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/series/{dataNascimento}"
   readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
   readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
 
   // { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
-  public usuario = new Usuario()
+  public static usuario = new Usuario()
 
-  public access_token = ""
 
   constructor(public http: Http, private storage: Storage, 
     private dialogService: DialogService,
@@ -50,10 +49,10 @@ export class AutenticacaoService {
           handler: () => {
             this.dialogService.showLoading("Saindo...");
             this.post(this.URL_LOGOUT).subscribe(result => {
-              this.clearTokenAndLeave()
+              this.clearUserAndLeave()
             }, err => {
               console.log(this.dialogService.CONSOLE_TAG, err);
-              this.clearTokenAndLeave()    
+              this.clearUserAndLeave()    
             });
           }
         }
@@ -63,19 +62,42 @@ export class AutenticacaoService {
     await alert.present();
   }
 
-  clearTokenAndLeave() {
-    this.storage.set(this.STORAGE_KEY_ACCESS_TOKEN, null).then(() => {
+  clearUserAndLeave() {
+    this.setUser(null, () => {
       this.dialogService.hideLoading(() => {
-          this.navCtrl.navigateRoot('/login');
+        this.goToLogin()
        });
+    })
+  }
+
+  public getUser() {
+    return this.storage.get(this.STORAGE_KEY_USER).then((val) => {
+      return val
     });
+  }
+
+  public setUser(user: Usuario, callback = null) {
+    this.storage.set(this.STORAGE_KEY_USER, user).then(() => {
+      AutenticacaoService.usuario = user
+      if (callback !== null) {
+        callback()
+      }
+    });
+  }
+
+  public goToLogin() {
+    this.navCtrl.navigateRoot('/login');
+  }
+
+  public goHomeAsRoot() {
+    this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
   private getDefaultRequestOptions() {
     var headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json' );   
-    headers.append("Authorization", 'Bearer ' + this.access_token);
+    headers.append("Authorization", 'Bearer ' + AutenticacaoService.usuario.accessToken);
     return new RequestOptions({ headers: headers });
   }
 
