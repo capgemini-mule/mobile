@@ -92,11 +92,18 @@ export class AutenticacaoService {
     this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
+  getAccessToken() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.accessToken
+    }
+    return ""
+  }
+
   private getDefaultRequestOptions() {
     var headers = new Headers();
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/json' );   
-    headers.append("Authorization", 'Bearer ' + AutenticacaoService.usuario.accessToken);
+    headers.append("Authorization", 'Bearer ' + this.getAccessToken());
     return new RequestOptions({ headers: headers });
   }
 
