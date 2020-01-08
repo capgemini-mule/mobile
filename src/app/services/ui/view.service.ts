@@ -28,4 +28,29 @@ export class ViewService {
     });
     return result;
   }
+
+  public maskCpf(v) {
+    if (!v) {
+      return
+    }
+    v = v.toString()
+    v = v.replace(/\D/g, ''); //Remove all that is not digits
+    v = v.replace(/(\d{3})(\d)/, '$1.$2'); //Insert a dot between the third and quarter digit
+    v = v.replace(/(\d{3})(\d)/, '$1.$2'); //Insert a dot between the third and quarter digit again
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); //Insert an dash between the third and quarter digit
+    return v;
+  }
+
+  public maskCnpj(v) {
+    if (!v) {
+      return
+    }
+    v = v.toString()
+    v = v.replace(/\D/g, ''); //Remove all that is not digits
+    v = v.replace(/^(\d{2})(\d)/, '$1.$2'); //Insert a dot between the second and third digits
+    v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3'); //Insert a dot between the fifth and sixth digits
+    v = v.replace(/\.(\d{3})(\d)/, '.$1/$2'); //Insert a slash between the eighth and ninth digits
+    v = v.replace(/(\d{4})(\d)/, '$1-$2'); //Insert an dash after the quarter digit
+    return v;
+  }
 }

@@ -36,6 +36,10 @@ export class CadastrarUsuarioPage implements OnInit {
   ngOnInit() {
   }
 
+  public onCpfChange($event){
+    this.formCadastro.cpf = this.viewService.maskCpf(this.formCadastro.cpf)
+  }
+
   cadastrar() {
 
     if(this.formCadastro.nome === "") { this.inputFirstName.setFocus(); }
