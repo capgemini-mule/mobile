@@ -21,7 +21,20 @@ export class AutenticacaoService {
   readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
   readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
 
-  // { nome: "Max", sobrenome: "Mulesoft", cpf: "maxmule", email: "max@mulesoft.com" }
+  // TODO Antes de trocar as urls abaixo do mock de Rubens, desabilitar as políticas do CORS para requisições funcionarem
+  // Para burlar isso executar comando abaixo com o chrome fechado e depois executar o ionic serve
+  // "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+
+  // readonly URL_BASE: string = "https://anypoint.mulesoft.com/mocking/api/v1/links/"
+  // readonly URL_LOGIN: string = this.URL_BASE + "ca554d74-2844-4b7e-9b2f-e20af00c1b3a/token"
+  // readonly URL_LOGOUT: string = this.URL_BASE + "ca554d74-2844-4b7e-9b2f-e20af00c1b3a/logout"
+  // readonly URL_CADASTRAR: string = this.URL_BASE + "ca554d74-2844-4b7e-9b2f-e20af00c1b3a/signup"
+  // readonly URL_PERFIL: string = this.URL_BASE + "e96134f6-d18a-4a7c-ba8e-6910803d3d4e/userinfo/{email}"
+  // readonly URL_SERVICOS: string = this.URL_BASE + "dc3079af-d042-47a5-9717-1f3d0b952947/servicos"
+  // readonly URL_MATRICULA_SERIES: string = this.URL_BASE + "87a1aece-9fc5-47f9-b17e-94d6ed1f0d1a/series/{dataNascimento}"
+  // readonly URL_MATRICULA_ESCOLAS: string = this.URL_BASE + "87a1aece-9fc5-47f9-b17e-94d6ed1f0d1a/series/{dataNascimento}"
+  // readonly URL_MATRICULA_INSCRICAO: string = this.URL_BASE + "87a1aece-9fc5-47f9-b17e-94d6ed1f0d1a/inscricao"
+
   public static usuario = new Usuario()
 
 

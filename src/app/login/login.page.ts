@@ -72,8 +72,9 @@ export class LoginPage implements OnInit {
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
-            //this.autenticacaoService.goHomeAsRoot()
+            // TODO descomentar erro e remover by pass
+            //this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.autenticacaoService.goHomeAsRoot()
           });
         });
   }
