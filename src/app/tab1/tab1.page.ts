@@ -1,8 +1,8 @@
+import { AutenticacaoService } from './../services/autenticacao.service';
 import { DialogService } from './../services/ui/dialog.service';
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { FavoriteService } from './../services/favorite.service';
-import { AutenticacaoService } from '../services/autenticacao.service';
 
 @Component({
   selector: 'app-tab1',
@@ -23,6 +23,13 @@ export class Tab1Page {
 
   ngOnInit() {
     
+  }
+
+  getNome() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.nome
+    }
+    return ""
   }
 
   ngAfterViewInit() {

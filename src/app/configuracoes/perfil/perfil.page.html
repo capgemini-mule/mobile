@@ -20,28 +20,28 @@
         <ion-label>Nome</ion-label>
       </ion-item-divider>
       <ion-item>
-        <ion-label>{{autenticacaoService.usuario.nome}}</ion-label>
+        <ion-label>{{this.getNome()}}</ion-label>
       </ion-item>
       
       <ion-item-divider>
         <ion-label>Sobrenome</ion-label>
       </ion-item-divider>
       <ion-item>
-        <ion-label>{{autenticacaoService.usuario.sobrenome}}</ion-label>
+        <ion-label>{{this.getSobrenome()}}</ion-label>
       </ion-item>
       
       <ion-item-divider>
         <ion-label>CPF</ion-label>
       </ion-item-divider>
       <ion-item>
-        <ion-label>{{autenticacaoService.usuario.cpf}}</ion-label>
+        <ion-label>{{this.getCpf()}}</ion-label>
       </ion-item>
       
       <ion-item-divider>
         <ion-label>E-mail</ion-label>
       </ion-item-divider>
       <ion-item>
-        <ion-label>{{autenticacaoService.usuario.email}}</ion-label>
+        <ion-label>{{this.getEmail()}}</ion-label>
       </ion-item>
   
   </ion-content>

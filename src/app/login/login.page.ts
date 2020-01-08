@@ -26,10 +26,12 @@ export class LoginPage implements OnInit {
 
   ngAfterViewInit() {
     this.storage.get(this.autenticacaoService.STORAGE_KEY_USER).then((val) => {
-      if(val !== null && val.accessToken !== null) {
-        AutenticacaoService.usuario = val
-        this.dialogService.showLoading("Validando acesso, aguarde...")
-        this.dadosUsuario(AutenticacaoService.usuario.email, val.accessToken)
+      if(val) {
+        if (val.accessToken) {
+          AutenticacaoService.usuario = val
+          this.dialogService.showLoading("Validando acesso, aguarde...")
+          this.dadosUsuario(AutenticacaoService.usuario.email, val.accessToken)
+        }
       }
     });
   }
@@ -71,6 +73,7 @@ export class LoginPage implements OnInit {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
             this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            //this.autenticacaoService.goHomeAsRoot()
           });
         });
   }

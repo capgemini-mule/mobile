@@ -32,7 +32,7 @@
     </ion-card-header>
 
     <ion-item>
-      <ion-label>Olá, {{this.autenticacaoService.usuario.nome}}</ion-label>
+      <ion-label>Olá, {{this.getNome()}}</ion-label>
     </ion-item>
 
     <ion-list lines="none" *ngIf="not_found==false">

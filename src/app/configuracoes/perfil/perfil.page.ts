@@ -21,6 +21,34 @@ export class PerfilPage implements OnInit {
     this.iniciaDadosUsuario();
   }
 
+  getNome() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.nome
+    }
+    return ""
+  }
+
+  getSobrenome() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.sobrenome
+    }
+    return ""
+  }
+
+  getCpf() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.cpf
+    }
+    return ""
+  }
+
+  getEmail() {
+    if (AutenticacaoService.usuario) {
+      return AutenticacaoService.usuario.email
+    }
+    return ""
+  }
+
   closeModal() {
     this.modalController.dismiss();
   }
@@ -35,7 +63,6 @@ export class PerfilPage implements OnInit {
             AutenticacaoService.usuario = result.json()
             AutenticacaoService.usuario.accessToken = accessToken
             this.autenticacaoService.setUser(AutenticacaoService.usuario)
-
           })          
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);

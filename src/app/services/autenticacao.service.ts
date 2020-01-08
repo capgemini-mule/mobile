@@ -42,7 +42,6 @@ export class AutenticacaoService {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Cancelando logoff');
           }
         }, {
           text: 'Sair',
