@@ -20,6 +20,7 @@ export class AutenticacaoService {
   readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/series/{dataNascimento}"
   readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
   readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
+  readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipos-identificacao-cogel-proxy.br-s1.cloudhub.io/tipos"
 
   // TODO Antes de trocar as urls abaixo do mock de Rubens, desabilitar as políticas do CORS para requisições funcionarem
   // Para burlar isso executar comando abaixo com o chrome fechado e depois executar o ionic serve

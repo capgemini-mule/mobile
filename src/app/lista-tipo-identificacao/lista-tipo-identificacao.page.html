@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title slot="start">Identificação</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="requestLista()">
+        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list class="ion-padding">
+    <ion-item *ngFor="let tipo of listaTipos">
+      <ion-label>{{tipo.tpi_ds_tipo_identificacao}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

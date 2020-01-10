@@ -32,6 +32,10 @@ const routes: Routes = [
   },  {
     path: 'inscricao-matricula',
     loadChildren: () => import('./inscricao-matricula/inscricao-matricula.module').then( m => m.InscricaoMatriculaPageModule)
+  },
+  {
+    path: 'lista-tipo-identificacao',
+    loadChildren: () => import('./lista-tipo-identificacao/lista-tipo-identificacao.module').then( m => m.ListaTipoIdentificacaoPageModule)
   }
 
 ];

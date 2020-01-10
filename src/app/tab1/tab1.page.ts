@@ -88,7 +88,12 @@ export class Tab1Page {
   }
 
   openService(item) {
-    this.navCtrl.navigateForward('/inscricao-matricula');
+    console.log('openService', item);
+    if (item.id == "1") { // lista de tipos de documentos
+      this.navCtrl.navigateForward('/lista-tipo-identificacao');
+    } else {
+      this.navCtrl.navigateForward('/inscricao-matricula');
+    }
   }
 
   logoff() {

@@ -52,7 +52,7 @@ export class DialogService {
     }
   }
 
-  async showDialog(title = "", subTitle = "", message = "", buttons = null) {
+  async showDialog(title = "", subTitle = "", message = "", buttons = null, onDismiss : Function = null) {
     if (buttons === null) {
       buttons = []
       buttons.push({text: 'OK'})
@@ -64,7 +64,11 @@ export class DialogService {
       header: title,
       subHeader: subTitle,
       message: message,
-      buttons: buttons
+      buttons: buttons,
+    });
+
+    alert.onDidDismiss().then(()=>{
+      if (onDismiss) onDismiss();
     });
 
     await alert.present();
