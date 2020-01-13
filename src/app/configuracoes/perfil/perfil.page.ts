@@ -56,18 +56,18 @@ export class PerfilPage implements OnInit {
   iniciaDadosUsuario() {
 
     this.dialogService.showLoading("Carregando dados do usuário, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL.replace('{email}', AutenticacaoService.usuario.email))
-        .subscribe( result => {
+    this.autenticacaoService.dadosUsuario(AutenticacaoService.usuario.email, AutenticacaoService.usuario.accessToken)
+        .then( result => {
           this.dialogService.hideLoading(() => {
             const accessToken = AutenticacaoService.usuario.accessToken
-            AutenticacaoService.usuario = result.json()
+            AutenticacaoService.usuario = result.json
             AutenticacaoService.usuario.accessToken = accessToken
             this.autenticacaoService.setUser(AutenticacaoService.usuario)
           })          
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
         });
   }

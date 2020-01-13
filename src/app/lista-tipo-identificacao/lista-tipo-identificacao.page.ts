@@ -25,10 +25,10 @@ export class ListaTipoIdentificacaoPage implements OnInit {
 
   requestLista() {
     this.dialogService.showLoading("Carregando lista, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_TIPOS_IDENTIFICACAO)
-        .subscribe( result => {
+    this.autenticacaoService.listarTiposIdentificacao()
+        .then( result => {
           this.dialogService.hideLoading(() => {
-              this.listaTipos = result.json();
+              this.listaTipos = result.json;
               // this.listaTipos = [
               //   { tpi_ds_tipo_identificacao : "RG" },
               //   { tpi_ds_tipo_identificacao : "CPF" },
@@ -38,7 +38,7 @@ export class ListaTipoIdentificacaoPage implements OnInit {
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR, null, ()=>{
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem, null, ()=>{
               this.navCtrl.pop();
             });
           });

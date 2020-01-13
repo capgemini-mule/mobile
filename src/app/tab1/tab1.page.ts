@@ -36,17 +36,17 @@ export class Tab1Page {
 
   ngAfterViewInit() {
     this.dialogService.showLoading("Carregando lista de serviços, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_SERVICOS)
-        .subscribe( result => {
+    this.autenticacaoService.listarServicos()
+        .then( result => {
           this.dialogService.hideLoading(() => {
-              this.lista_servicos = result.json(); 
-              this.lista_servicos_completa = result.json();
+              this.lista_servicos = result.json; 
+              this.lista_servicos_completa = [].concat(result.json);
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
             this.notFound();
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
   }

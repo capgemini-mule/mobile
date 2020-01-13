@@ -12,7 +12,6 @@ export class DialogService {
 
   readonly WARNING: string = "ATENÇÃO"
   readonly ERROR: string = "Erro!"
-  readonly GENERIC_ERROR: string = "Sua solicitação não pôde ser atendida. Por favor, tente novamente"
   readonly CONSOLE_TAG: string = "CONSOLE_TAG: "
   readonly FILL_EMAIL: string = "Preencha o e-mail."
   readonly FILL_PASSWORD: string = "Preencha a senha."

@@ -33,15 +33,15 @@ export class ListaOrgaosPage implements OnInit {
 
   requestLista() {
     this.dialogService.showLoading("Carregando orgãos, aguarde...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_ORGAO)
-        .subscribe( result => {
+    this.autenticacaoService.listarOrgaos()
+        .then( result => {
           this.dialogService.hideLoading(() => {
-              this.listaOrgaos = result.json();
+              this.listaOrgaos = result.json;
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR, null, ()=>{
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem, null, ()=>{
               this.navCtrl.pop();
             });
           });

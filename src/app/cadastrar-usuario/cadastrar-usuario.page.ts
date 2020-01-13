@@ -54,9 +54,9 @@ export class CadastrarUsuarioPage implements OnInit {
       this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
     } else {
       this.dialogService.showLoading("Efetuando cadastro, aguarde...");
-      this.autenticacaoService.post(this.autenticacaoService.URL_CADASTRAR, JSON.stringify(this.formCadastro))
-        .subscribe( result => {
-              let retorno = result.json();
+      this.autenticacaoService.cadastrarUsuario(this.formCadastro)
+        .then( result => {
+              let retorno = result.json;
               if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog("Cadastro", "", "Cadastro Efetuado com Sucesso.", [{text: 'OK', handler: () => {
@@ -72,7 +72,7 @@ export class CadastrarUsuarioPage implements OnInit {
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
         });
     }

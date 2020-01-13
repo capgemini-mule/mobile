@@ -58,12 +58,12 @@ export class FormOrgaoPage implements OnInit {
 
     this.dialogService.showLoading("Salvando os dados, aguarde...");
     this.autenticacaoService.salvarOrgao(orgao)
-        .subscribe( result => {
+        .then( result => {
           this.dialogService.hideLoading();
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
   }
@@ -78,14 +78,14 @@ export class FormOrgaoPage implements OnInit {
   private requestDelete() {
     this.dialogService.showLoading("Removendo o orgão, aguarde...");
     this.autenticacaoService.salvarOrgao(this.orgao)
-        .subscribe( result => {
+        .then( result => {
           this.dialogService.hideLoading(() => {
             this.navCtrl.pop();
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
   }
