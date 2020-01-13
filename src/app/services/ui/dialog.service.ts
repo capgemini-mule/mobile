@@ -28,7 +28,7 @@ export class DialogService {
       message = "Carregando"
     }
 
-    await this.hideLoading();
+    this.hideLoading();
 
     this.isLoading = true;
     this.loading = await this.loadingController.create({
@@ -55,7 +55,7 @@ export class DialogService {
   }
 
   async showDialog(title = "", subTitle = "", message = "", buttons = null, onDismiss : Function = null) {
-    await this.hideLoading();
+    this.hideLoading();
     
     if (buttons === null) {
       buttons = []

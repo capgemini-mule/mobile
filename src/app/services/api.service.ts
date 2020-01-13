@@ -86,14 +86,14 @@ export class ApiService {
     };
 
     // headers:
+    options.headers = {
+      "Accept": 'application/json',
+      "Content-Type": 'application/json',
+    };
+    if (this.accessToken) {
+      options.headers["Authorization"] = 'Bearer ' + this.accessToken;
+    }
     if (reqOptions.headers) {
-      options.headers = {
-        "Accept": 'application/json',
-        "Content-Type": 'application/json',
-      };
-      if (this.accessToken) {
-        options.headers["Authorization"] = 'Bearer ' + this.accessToken;
-      }
       for (const key in reqOptions.headers) {
         if (key) {
           options.headers[key] = reqOptions.headers[key];
