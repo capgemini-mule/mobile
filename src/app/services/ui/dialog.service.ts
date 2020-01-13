@@ -8,6 +8,7 @@ import { LoadingController, AlertController } from '@ionic/angular';
 export class DialogService {
 
   loading: any;
+  isLoading = false;
 
   readonly WARNING: string = "ATENÇÃO"
   readonly ERROR: string = "Erro!"
@@ -23,38 +24,40 @@ export class DialogService {
 
   }
 
-  async showLoading(message = null) {
-    if (message === null) {
+   async showLoading(message = null) {
+    if (!message) {
       message = "Carregando"
     }
-    if (this.loading) {
-      console.log('loading', 'dismiss show')
-      await this.loading.dismiss()
-      this.loading = null
-    }
-    console.log('loading', 'create')
+
+    await this.hideLoading();
+
+    this.isLoading = true;
     this.loading = await this.loadingController.create({
       message: message
     });
-    await this.loading.present();    
+    await this.loading.present()
+      .then(() => {
+        if (!this.isLoading) {
+          this.hideLoading();
+        }
+      });   
   }
 
   async hideLoading(callback = null) {
-    console.log('loading', 'dismiss show')
     if (this.loading) {
-      await this.loading.dismiss()
-      this.loading = null
-      if (callback !== null) {
-        callback()
-      }
-    } else {
-      if (callback !== null) {
-          callback()
-        }
+      await this.loading.dismiss();
+    }
+    this.loading = null;
+    this.isLoading = false;
+
+    if (callback != null) {
+      callback();
     }
   }
 
   async showDialog(title = "", subTitle = "", message = "", buttons = null, onDismiss : Function = null) {
+    await this.hideLoading();
+    
     if (buttons === null) {
       buttons = []
       buttons.push({text: 'OK'})
