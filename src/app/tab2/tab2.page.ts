@@ -2,6 +2,7 @@ import { FavoriteService } from './../services/favorite.service';
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AutenticacaoService } from '../services/autenticacao.service';
+import { NavegacaoService } from '../services/ui/navegacao.service';
 
 @Component({
   selector: 'app-tab2',
@@ -14,7 +15,8 @@ export class Tab2Page {
   lista_servicos: any = [];
 
   constructor(public navCtrl: NavController, private favoriteService: FavoriteService,
-    private autenticacaoService: AutenticacaoService) {
+    private autenticacaoService: AutenticacaoService,
+    private navegacaoService: NavegacaoService) {
     
   }
 
@@ -36,7 +38,7 @@ export class Tab2Page {
   }
 
   openFavorite(item) {
-    this.navCtrl.navigateForward('/inscricao-matricula');
+    this.navegacaoService.goToService(item);
   }
 
   logoff() {

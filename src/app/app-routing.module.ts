@@ -36,6 +36,10 @@ const routes: Routes = [
   {
     path: 'lista-tipo-identificacao',
     loadChildren: () => import('./lista-tipo-identificacao/lista-tipo-identificacao.module').then( m => m.ListaTipoIdentificacaoPageModule)
+  },
+  {
+    path: 'lista-orgaos',
+    loadChildren: () => import('./orgaos/lista-orgaos/lista-orgaos.module').then( m => m.ListaOrgaosPageModule)
   }
 
 ];

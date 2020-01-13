@@ -3,6 +3,7 @@ import { DialogService } from './../services/ui/dialog.service';
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { FavoriteService } from './../services/favorite.service';
+import { NavegacaoService } from '../services/ui/navegacao.service';
 
 @Component({
   selector: 'app-tab1',
@@ -18,7 +19,8 @@ export class Tab1Page {
   lista_servicos_completa: any = []
 
   constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, 
-    private dialogService: DialogService, private favoriteService: FavoriteService) {
+    private dialogService: DialogService, private favoriteService: FavoriteService,
+    private navegacaoService: NavegacaoService) {
   }
 
   ngOnInit() {
@@ -88,12 +90,7 @@ export class Tab1Page {
   }
 
   openService(item) {
-    console.log('openService', item);
-    if (item.id == "1") { // lista de tipos de documentos
-      this.navCtrl.navigateForward('/lista-tipo-identificacao');
-    } else {
-      this.navCtrl.navigateForward('/inscricao-matricula');
-    }
+    this.navegacaoService.goToService(item);
   }
 
   logoff() {
