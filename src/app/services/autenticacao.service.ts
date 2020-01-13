@@ -13,16 +13,16 @@ export class AutenticacaoService {
 
   readonly STORAGE_KEY_USER = "lastUser"
 
-  readonly URL_LOGIN: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/token"
-  readonly URL_LOGOUT: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/logout"
-  readonly URL_CADASTRAR: string = "http://autorizacao-cogel-proxy.br-s1.cloudhub.io/signup"
-  readonly URL_PERFIL: string = "http://clientes-cogel-proxy.br-s1.cloudhub.io/userinfo/{email}"
-  readonly URL_SERVICOS: string = "http://servicos-cogel-proxy.br-s1.cloudhub.io/servicos"
-  readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/series/{dataNascimento}"
-  readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
-  readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
-  readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipos-identificacao-cogel-proxy.br-s1.cloudhub.io/tipos"
-  readonly URL_ORGAO: string = "http://orgaos-proxy.br-s1.cloudhub.io/orgaos"
+  readonly URL_LOGIN: string = "http://autorizacao-cogel-proxy.us-e2.cloudhub.io/token"
+  readonly URL_LOGOUT: string = "http://autorizacao-cogel-proxy.us-e2.cloudhub.io/logout"
+  readonly URL_CADASTRAR: string = "http://autorizacao-cogel-proxy.us-e2.cloudhub.io/signup"
+  readonly URL_PERFIL: string = "http://autorizacao-cogel-proxy.us-e2.cloudhub.io/userinfo/{email}"
+  readonly URL_SERVICOS: string = "http://servicos-cogel-proxy.us-e2.cloudhub.io/servicos"
+  readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.us-e2.cloudhub.io/series/{dataNascimento}"
+  readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.us-e2.cloudhub.io/escolas/{codSerie}"
+  readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.us-e2.cloudhub.io/inscricao"
+  readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipo-identificacao-cogel-proxy.us-e2.cloudhub.io/tipos"
+  readonly URL_ORGAO: string = "http://orgaos-cogel-proxy.us-e2.cloudhub.io/orgaos"
 
   // TODO Antes de trocar as urls abaixo do mock de Rubens, desabilitar as políticas do CORS para requisições funcionarem
   // Para burlar isso executar comando abaixo com o chrome fechado e depois executar o ionic serve
