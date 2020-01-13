@@ -4,6 +4,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Storage } from '@ionic/storage';
 import { DialogService } from './../services/ui/dialog.service';
 import { NavController, AlertController } from '@ionic/angular';
+import { Orgao } from '../types/Orgao';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AutenticacaoService {
   readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
   readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
   readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipos-identificacao-cogel-proxy.br-s1.cloudhub.io/tipos"
-  readonly URL_ORGAO: string = "http://tipos-identificacao-cogel-proxy.br-s1.cloudhub.io/tipos"
+  readonly URL_ORGAO: string = "http://orgaos-proxy.br-s1.cloudhub.io/orgaos"
 
   // TODO Antes de trocar as urls abaixo do mock de Rubens, desabilitar as políticas do CORS para requisições funcionarem
   // Para burlar isso executar comando abaixo com o chrome fechado e depois executar o ionic serve
@@ -129,4 +130,20 @@ export class AutenticacaoService {
   public post(link="", payload="") {
     return this.http.post(link, payload, this.getDefaultRequestOptions());
   }
+
+  ////////////
+  // orgaos
+
+  public salvarOrgao(orgao: Orgao) {
+    if (orgao.codigo) {
+      return this.http.post(`${this.URL_ORGAO}/${orgao.codigo}`, orgao, this.getDefaultRequestOptions());
+    } else {
+      return this.http.put(this.URL_ORGAO, orgao, this.getDefaultRequestOptions());
+    }
+  }
+
+  public deletarOrgao(orgao: Orgao) {
+    return this.http.delete(`${this.URL_ORGAO}/${orgao.codigo}`, this.getDefaultRequestOptions());
+  }
+
 }

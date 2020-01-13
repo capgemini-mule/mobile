@@ -11,6 +11,10 @@ export class NavegacaoService {
 
   constructor(private navCtrl: NavController) { }
 
+  public getOrgao() : Orgao {
+    return this.orgao;
+  }
+
   public goToService(item: any) {
     console.log('goToService', item);
 
@@ -27,6 +31,6 @@ export class NavegacaoService {
 
   public goToOrgao(orgao: Orgao = null) {
     this.orgao = orgao;
-    this.navCtrl.navigateForward('/form-orgaos');
+    this.navCtrl.navigateForward('/form-orgao');
   }
 }

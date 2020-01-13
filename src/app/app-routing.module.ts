@@ -40,6 +40,10 @@ const routes: Routes = [
   {
     path: 'lista-orgaos',
     loadChildren: () => import('./orgaos/lista-orgaos/lista-orgaos.module').then( m => m.ListaOrgaosPageModule)
+  },
+  {
+    path: 'form-orgao',
+    loadChildren: () => import('./orgaos/form-orgao/form-orgao.module').then( m => m.FormOrgaoPageModule)
   }
 
 ];

@@ -15,6 +15,8 @@ export class DialogService {
   readonly CONSOLE_TAG: string = "CONSOLE_TAG: "
   readonly FILL_EMAIL: string = "Preencha o e-mail."
   readonly FILL_PASSWORD: string = "Preencha a senha."
+  readonly FILL_SIGLA: string = "Preencha a sigla."
+  readonly FILL_NOME: string = "Preencha o nome."
 
 
   constructor(public alertController: AlertController, public loadingController: LoadingController) { 
@@ -72,5 +74,21 @@ export class DialogService {
     });
 
     await alert.present();
+  }
+
+  confirm(message: string) {
+    return new Promise((resolve) => {
+
+      this.alertController.create({
+        message: message,
+        buttons : [
+          { text : "Não", role: "cancel", handler : () =>{ resolve(false); }},
+          { text : "Sim", handler : () =>{ resolve(true); }},
+        ]
+      }).then((alert)=>{
+        alert.present();
+      });
+
+    });
   }
 }

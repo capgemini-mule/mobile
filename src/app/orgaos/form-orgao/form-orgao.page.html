@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Orgão</ion-title>
+    <ion-buttons slot="end" *ngIf="orgao">
+      <ion-button (click)="deletar()">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list class="ion-padding">
+
+    <ion-item>
+      <ion-label position="floating">Sigla</ion-label>
+      <ion-input [(ngModel)]="formOrgao.sigla" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input [(ngModel)]="formOrgao.nome" type="text"></ion-input>
+    </ion-item>
+
+    <ion-button class="btnSave" expand="block" (click)="salvar()">Salvar</ion-button>
+
+  </ion-list>
+
+</ion-content>
