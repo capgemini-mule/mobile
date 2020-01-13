@@ -1,19 +1,19 @@
 <ion-content class="pageLogin">
 
     <ion-list>
-        <ion-item class="logo_login" >
+        <ion-item class="logo_login" lines="none" >
             <img src="/assets/imgs/logo_prin.png"/>                
         </ion-item>
         
-        <ion-item>
+        <ion-item lines="none">
             <ion-input [(ngModel)]="formLogin.username" placeholder="E-mail" type="email"></ion-input>
         </ion-item>
         
-        <ion-item>
+        <ion-item lines="none">
             <ion-input [(ngModel)]="formLogin.password" placeholder="Senha" type="password"></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item lines="none">
                 <ion-button expand="full" class="bt_login" (click)="login()">Entrar</ion-button>
         </ion-item>
 
