@@ -38,10 +38,9 @@ export class Tab1Page {
     this.dialogService.showLoading("Carregando lista de serviços, aguarde...");
     this.autenticacaoService.listarServicos()
         .then( result => {
-          this.dialogService.hideLoading(() => {
-              this.lista_servicos = result.json; 
-              this.lista_servicos_completa = [].concat(result.json);
-          });
+          this.lista_servicos = result.json; 
+          this.lista_servicos_completa = [].concat(result.json);
+          this.dialogService.hideLoading();
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {

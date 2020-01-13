@@ -45,8 +45,9 @@ export class LoginPage implements OnInit {
       this.dialogService.showLoading("Validando acesso, aguarde...")
         this.autenticacaoService.login(this.formLogin.username, this.formLogin.password)
         .then( result => {
-          this.dialogService.hideLoading();
-          this.autenticacaoService.goHomeAsRoot();
+          this.dialogService.hideLoading(() => {
+            this.autenticacaoService.goHomeAsRoot();
+          });
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
