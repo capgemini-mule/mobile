@@ -55,7 +55,7 @@ export class ApiService {
   readonly URL_MATRICULA_ESCOLAS: string = this.URL_BASE + "87a1aece-9fc5-47f9-b17e-94d6ed1f0d1a/series/{dataNascimento}"
   readonly URL_MATRICULA_INSCRICAO: string = this.URL_BASE + "87a1aece-9fc5-47f9-b17e-94d6ed1f0d1a/inscricao"
   readonly URL_TIPOS_IDENTIFICACAO: string = this.URL_BASE + "d4371c91-49da-4b51-a436-d642c9787d3f/tipoIdentificacao"
-  readonly URL_ORGAO: string = this.URL_BASE + "<UUID>/orgao"
+  readonly URL_ORGAO: string = this.URL_BASE + "6d61ebd2-e92b-436c-9ac9-b22f2c7749b0/orgaos"
 
   private accessToken : string = null;
 
