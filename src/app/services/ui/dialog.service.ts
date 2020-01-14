@@ -44,11 +44,11 @@ export class DialogService {
     if (this.loading) {
       await this.loading.dismiss()
       this.loading = null
-      if (callback !== null) {
+      if (callback) {
         callback()
       }
     } else {
-      if (callback !== null) {
+      if (callback) {
           callback()
         }
     }
