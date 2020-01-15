@@ -143,8 +143,17 @@ export class AutenticacaoService {
   }
 
   listarServicos()  {
-    return this.apiService.request({
-      url: this.apiService.URL_SERVICOS
+    // ios-
+    return new Promise<any>((resolve, reject)=>{
+      this.apiService.request({
+        url: this.apiService.URL_SERVICOS
+      }).then((response)=>{
+        response.json.forEach(s => {
+          s.icon = "ios-" + s.icon;
+        });
+        resolve(response);
+      })
+      .catch(reject);
     }); 
   }
 
