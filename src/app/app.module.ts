@@ -27,7 +27,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
   ],
   imports: [
     BrowserModule, 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot({mode: 'md'}),
     AppRoutingModule,
     HttpModule,
     IonicStorageModule.forRoot(),
