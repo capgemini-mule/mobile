@@ -113,13 +113,14 @@ export class AutenticacaoService {
 
   public getUser() {
     return this.storage.get(this.STORAGE_KEY_USER).then((val) => {
-      return val
+      return JSON.parse(val);
     });
   }
 
   public setUser(user: Usuario, callback = null) {
-    this.storage.set(this.STORAGE_KEY_USER, user).then(() => {
-      AutenticacaoService.usuario = user
+    let userString = JSON.stringify(user);
+    this.storage.set(this.STORAGE_KEY_USER, userString).then(() => {
+      AutenticacaoService.usuario = user;
       if (callback !== null) {
         callback()
       }
