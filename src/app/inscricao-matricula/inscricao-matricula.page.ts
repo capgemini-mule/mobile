@@ -32,16 +32,16 @@ export class InscricaoMatriculaPage implements OnInit {
 
   getSeries() {
     this.dialogService.showLoading("Carregando séries...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_SERIES.replace('{dataNascimento}', AutenticacaoService.usuario.dataNascimento))
-        .subscribe( result => {
+    this.autenticacaoService.listarSeries()
+        .then( result => {
           this.dialogService.hideLoading(() => {
-            this.series = [ result.json() ]
+            this.series = [ result.json ]
             console.log('log', this.series)
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
   }
@@ -54,16 +54,16 @@ export class InscricaoMatriculaPage implements OnInit {
 
   getEscolas() {
     this.dialogService.showLoading("Carregando escolas...");
-    this.autenticacaoService.get(this.autenticacaoService.URL_MATRICULA_ESCOLAS.replace('{codSerie}', '1'))
-        .subscribe( result => {
+    this.autenticacaoService.listarEscolas()
+        .then( result => {
           this.dialogService.hideLoading(() => {
-            this.escolas = result.json()
+            this.escolas = result.json
             console.log('log', this.escolas)
           });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
   }
@@ -85,8 +85,9 @@ export class InscricaoMatriculaPage implements OnInit {
 
   inscrever() {
     this.dialogService.showLoading("Fazendo Inscrição...")
-    this.autenticacaoService.post(this.autenticacaoService.URL_MATRICULA_INSCRICAO, JSON.stringify(this.request)).subscribe( result => {
-      let resposta = result.json()
+    this.autenticacaoService.inscreverAluno(this.request)
+    .then( result => {
+      let resposta = result.json
       if (resposta.numeroInscricao) {
         this.dialogService.hideLoading(() => {
           this.dialogService.showDialog("Matrícula", "", "Matrícula Efetuada com Sucesso!", [{text: 'OK', handler: () => {
@@ -101,7 +102,7 @@ export class InscricaoMatriculaPage implements OnInit {
     }, err => {
       console.log(this.dialogService.CONSOLE_TAG, err);
       this.dialogService.hideLoading(() => {
-        this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+        this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
       });
     });
   }

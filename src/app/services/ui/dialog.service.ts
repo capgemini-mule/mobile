@@ -8,10 +8,10 @@ import { LoadingController, AlertController } from '@ionic/angular';
 export class DialogService {
 
   loading: any;
+  isLoading = false;
 
   readonly WARNING: string = "ATENÇÃO"
   readonly ERROR: string = "Erro!"
-  readonly GENERIC_ERROR: string = "Sua solicitação não pôde ser atendida. Por favor, tente novamente"
   readonly CONSOLE_TAG: string = "CONSOLE_TAG: "
   readonly FILL_EMAIL: string = "Preencha o e-mail."
   readonly FILL_PASSWORD: string = "Preencha a senha."
@@ -23,38 +23,40 @@ export class DialogService {
 
   }
 
-  async showLoading(message = null) {
-    if (message === null) {
+   async showLoading(message = null) {
+    if (!message) {
       message = "Carregando"
     }
-    if (this.loading) {
-      console.log('loading', 'dismiss show')
-      await this.loading.dismiss()
-      this.loading = null
-    }
-    console.log('loading', 'create')
+
+    this.hideLoading();
+
+    this.isLoading = true;
     this.loading = await this.loadingController.create({
       message: message
     });
-    await this.loading.present();    
+    await this.loading.present()
+      .then(() => {
+        if (!this.isLoading) {
+          this.hideLoading();
+        }
+      });   
   }
 
   async hideLoading(callback = null) {
-    console.log('loading', 'dismiss show')
     if (this.loading) {
-      await this.loading.dismiss()
-      this.loading = null
-      if (callback) {
-        callback()
-      }
-    } else {
-      if (callback) {
-          callback()
-        }
+      await this.loading.dismiss();
+    }
+    this.loading = null;
+    this.isLoading = false;
+
+    if (callback) {
+      callback();
     }
   }
 
   async showDialog(title = "", subTitle = "", message = "", buttons = null, onDismiss : Function = null) {
+    this.hideLoading();
+    
     if (buttons === null) {
       buttons = []
       buttons.push({text: 'OK'})

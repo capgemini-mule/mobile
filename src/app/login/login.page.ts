@@ -1,8 +1,9 @@
 import { DialogService } from './../services/ui/dialog.service';
 import { Component, OnInit } from '@angular/core';
-import {  NavController } from '@ionic/angular';
+import {  NavController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AutenticacaoService } from '../services/autenticacao.service'
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,12 @@ export class LoginPage implements OnInit {
 
   formLogin = { username: '', password: ''}
 
-  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, private storage: Storage, private dialogService: DialogService) { 
+  constructor(public navCtrl: NavController,
+    public autenticacaoService: AutenticacaoService,
+    private storage: Storage,
+    private dialogService: DialogService,
+    private platform: Platform,
+    private splashScreen: SplashScreen) { 
   }
 
   ngOnInit() {
@@ -24,7 +30,14 @@ export class LoginPage implements OnInit {
     this.storage.clear()
   }
 
-  ngAfterViewInit() {
+  ionViewDidEnter() {
+    this.platform.ready().then(() => {
+      this.splashScreen.hide();
+      this.checkLoggedUser();
+    });
+  }
+
+  private checkLoggedUser() {
     this.storage.get(this.autenticacaoService.STORAGE_KEY_USER).then((val) => {
       if(val) {
         if (val.accessToken) {
@@ -42,39 +55,33 @@ export class LoginPage implements OnInit {
     } else if (this.formLogin.password === "") {
       this.dialogService.showDialog(this.dialogService.WARNING, "", this.dialogService.FILL_PASSWORD)
     } else {
-        this.dialogService.showLoading("Validando acesso, aguarde...")
-        this.autenticacaoService.post(this.autenticacaoService.URL_LOGIN, JSON.stringify(this.formLogin)).subscribe( result => {
-              let autenticacao = result.json()
-              if(autenticacao.access_token) {
-                this.dadosUsuario(this.formLogin.username, autenticacao.access_token)
-              } else {
-                this.dialogService.hideLoading(() => {
-                  this.dialogService.showDialog(this.dialogService.WARNING, "", "Usuário ou senha inválidos");
-                })
-              }
+      this.dialogService.showLoading("Validando acesso, aguarde...")
+        this.autenticacaoService.login(this.formLogin.username, this.formLogin.password)
+        .then( result => {
+          this.dialogService.hideLoading(() => {
+            this.autenticacaoService.goHomeAsRoot();
+          });
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
         });
     }
   }
 
   dadosUsuario(email: string, acessToken: string) {
-    this.autenticacaoService.get(this.autenticacaoService.URL_PERFIL.replace('{email}', email))
-        .subscribe( result => {
+    this.autenticacaoService.dadosUsuario(email, acessToken)
+        .then( result => {
           this.dialogService.hideLoading(() => {
-            AutenticacaoService.usuario = result.json()
+            AutenticacaoService.usuario = result.json
             AutenticacaoService.usuario.accessToken = acessToken
             this.autenticacaoService.goHomeAsRoot()
           })          
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            // TODO descomentar erro e remover by pass
-            //this.dialogService.showDialog(this.dialogService.ERROR, "", this.dialogService.GENERIC_ERROR);
-            this.autenticacaoService.goHomeAsRoot()
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
         });
   }

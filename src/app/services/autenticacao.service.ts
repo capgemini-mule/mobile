@@ -1,10 +1,13 @@
 import { Usuario } from './../types/Usuario';
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { DialogService } from './../services/ui/dialog.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { Orgao } from '../types/Orgao';
+import { ApiService } from './api.service';
+import { RequestInscricaoMatricula } from '../types/RequestInscricaoMatricula';
+import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +16,58 @@ export class AutenticacaoService {
 
   readonly STORAGE_KEY_USER = "lastUser"
 
-  readonly URL_LOGIN: string = "http://autorizacao-proxy.br-s1.cloudhub.io/token"
-  readonly URL_LOGOUT: string = "http://autorizacao-proxy.br-s1.cloudhub.io/logout"
-  readonly URL_CADASTRAR: string = "http://autorizacao-proxy.br-s1.cloudhub.io/signup"
-  readonly URL_PERFIL: string = "http://autorizacao-proxy.br-s1.cloudhub.io/userinfo/{email}"
-  readonly URL_SERVICOS: string = "http://servicos-proxy.br-s1.cloudhub.io/servicos"
-  readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipoidentificacao-proxy.br-s1.cloudhub.io/tipoIdentificacao"
-  readonly URL_ORGAO: string = "http://orgaos-proxy.br-s1.cloudhub.io/orgaos"
-
-  // Não utilizados
-  readonly URL_MATRICULA_SERIES: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/series/{dataNascimento}"
-  readonly URL_MATRICULA_ESCOLAS: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/escolas/{codSerie}"
-  readonly URL_MATRICULA_INSCRICAO: string = "http://inscricaomatriculaescolar-cogel-proxy.br-s1.cloudhub.io/inscricao"
-
-
   public static usuario = new Usuario()
 
+  // os codigos dos orgaos cadastrados devem ser enviados (NÃO são auto-increment na tabela)
+  // por isso vamos manter o maior para salvar um novo como maiorCodigo + 1
+  private maiorCodigo: number;
 
-  constructor(public http: Http, private storage: Storage, 
+
+  constructor(private storage: Storage, 
     private dialogService: DialogService,
     public navCtrl: NavController,
-    public alertController: AlertController) { 
+    public alertController: AlertController,
+    private apiService: ApiService) { 
+  }
 
+  public login(usuario: string, senha: string) {
+    return new Promise<any>((resolve, reject) => {
+      this.apiService.request({
+        method: "POST",
+        url: this.apiService.URL_LOGIN,
+        body : {
+          username: usuario,
+          password: senha
+        }
+      })
+      .then((result) => {
+        debugger;
+        let autenticacao = result.json;
+        if(autenticacao.access_token) {
+          this.apiService.setAccessToken(autenticacao.access_token);
+          this.dadosUsuario(usuario, autenticacao.access_token)
+            .then(resolve)
+            .catch(reject);
+        } else {
+          reject({mensagem : "Usuário ou senha inválidos"});
+        }
+      })
+      .catch(reject);
+    });
+  }
+
+  public dadosUsuario(email: string, acessToken: string) {
+    return new Promise<any>((resolve, reject) =>{
+      this.apiService.request({
+        method: 'GET',
+        url : this.apiService.URL_PERFIL.replace('{email}', email),
+      }).then( result => {
+        AutenticacaoService.usuario = result.json
+        AutenticacaoService.usuario.accessToken = acessToken
+        this.apiService.setAccessToken(acessToken);
+        resolve(result);
+      }, reject);
+    }); 
   }
 
   async logoff() {
@@ -52,7 +85,10 @@ export class AutenticacaoService {
           text: 'Sair',
           handler: () => {
             this.dialogService.showLoading("Saindo...");
-            this.post(this.URL_LOGOUT).subscribe(result => {
+            this.apiService.request({
+              method: 'POST',
+              url: this.apiService.URL_LOGOUT,
+            }).then(result => {
               this.clearUserAndLeave()
             }, err => {
               console.log(this.dialogService.CONSOLE_TAG, err);
@@ -67,6 +103,7 @@ export class AutenticacaoService {
   }
 
   clearUserAndLeave() {
+    this.apiService.setAccessToken(null);
     this.setUser(null, () => {
       this.dialogService.hideLoading(() => {
         this.goToLogin()
@@ -76,13 +113,14 @@ export class AutenticacaoService {
 
   public getUser() {
     return this.storage.get(this.STORAGE_KEY_USER).then((val) => {
-      return val
+      return JSON.parse(val);
     });
   }
 
   public setUser(user: Usuario, callback = null) {
-    this.storage.set(this.STORAGE_KEY_USER, user).then(() => {
-      AutenticacaoService.usuario = user
+    let userString = JSON.stringify(user);
+    this.storage.set(this.STORAGE_KEY_USER, userString).then(() => {
+      AutenticacaoService.usuario = user;
       if (callback !== null) {
         callback()
       }
@@ -97,43 +135,112 @@ export class AutenticacaoService {
     this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
-  getAccessToken() {
-     if (AutenticacaoService.usuario) {
-       return AutenticacaoService.usuario.accessToken
-    }
-    return ""
-    //return "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImdQUlUzY3djOURiX1dYc08tdFVuTHk2VGRBdyJ9.eyJhdWQiOiJtaWNyb3NvZnQ6aWRlbnRpdHlzZXJ2ZXI6MTgwYmYwNGQtZTJlMy00Y2Y2LWJmMTgtNzhlOTQ0NjE5NmNiIiwiaXNzIjoiaHR0cDovL2FkZnNzZW1nZS5zZW1nZS5wb2MvYWRmcy9zZXJ2aWNlcy90cnVzdCIsImlhdCI6MTU3OTAzMzMzNCwiZXhwIjoxNTc5MDM2OTM0LCJ1bmlxdWVfbmFtZSI6Im11bGVzb2Z0IiwicHJpbWFyeXNpZCI6ImEremg1MHBMWTBHVy9BM2x6R2ZhOWc9PSIsImFwcHR5cGUiOiJDb25maWRlbnRpYWwiLCJhcHBpZCI6IjI2MjAzMDhlLTkyYjYtNGJiMy05NmY4LTE1YjczNDQwNmM3NCIsImF1dGhtZXRob2QiOiJ1cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6YWM6Y2xhc3NlczpQYXNzd29yZFByb3RlY3RlZFRyYW5zcG9ydCIsImF1dGhfdGltZSI6IjIwMjAtMDEtMTRUMjA6MjI6MTQuNDYxWiIsInZlciI6IjEuMCJ9.sEgQN8H-pUbP_OgpDozY_qqGX0TdbSASNJdjGMBnOCRvSPhA5gvl6jTePUObxFtUJ0fmc1-1MAyAnnryCxg1GFRTZtGgCyCpzmq4VZUknwC2qh2D9yMjjBPHew9a94vw7ox2fny-Lz1nmW70H-a1veMV8kPo-8aNOWwFSL_NCvVUXu5ci4wPHVSS_c-Ro_mLQZ6oedgcrYolTA8dcOBa0F2xxXlbcDyIs9NE3dVsJArGXP51dCyPN5I-Wo7aTy9Iw5UlgwyOnGSllkZynxqrp0lMAw3iSoGy4SPPQSo-MeyAC4_XqoRwMG3zH12iaC8QJdoTzmzwJLW7mQHjdwZ_1w"
+  cadastrarUsuario(form: any) {
+    return this.apiService.request({
+      method: "post",
+      url: this.apiService.URL_CADASTRAR,
+      body: form
+    });
   }
 
-  private getDefaultRequestOptions() {
-    var headers = new Headers();
-    headers.append("Accept", 'application/json');
-    headers.append('Content-Type', 'application/json' );   
-    headers.append("Authorization", 'Bearer ' + this.getAccessToken());
-    return new RequestOptions({ headers: headers });
+  resetSenha(email: string) {
+    return this.apiService.request({
+      url: `${this.apiService.URL_RESET_SENHA}/${email}`
+    });
   }
 
-  public get(link="") {    
-    return this.http.get(link, this.getDefaultRequestOptions()); 
+  listarServicos()  {
+    // ios-
+    return new Promise<any>((resolve, reject)=>{
+      this.apiService.request({
+        url: this.apiService.URL_SERVICOS
+      }).then((response)=>{
+        response.json.forEach(s => {
+          s.icon = "ios-" + s.icon;
+        });
+        resolve(response);
+      })
+      .catch(reject);
+    }); 
   }
 
-  public post(link="", payload="") {
-    return this.http.post(link, payload, this.getDefaultRequestOptions());
+  listarTiposIdentificacao() {
+    return this.apiService.request({
+      url: this.apiService.URL_TIPOS_IDENTIFICACAO
+    });
+  }
+
+  listarSeries() {
+    return this.apiService.request({
+      url: this.apiService.URL_MATRICULA_SERIES.replace('{dataNascimento}', AutenticacaoService.usuario.dataNascimento)
+    });
+  }
+
+  listarEscolas() {
+    return this.apiService.request({
+      url: this.apiService.URL_MATRICULA_ESCOLAS.replace('{codSerie}', '1')
+    });
+  }
+
+  inscreverAluno(request: RequestInscricaoMatricula) {
+    return this.apiService.request({
+      url: this.apiService.URL_MATRICULA_INSCRICAO,
+      body: request
+    });
   }
 
   ////////////
   // orgaos
 
+  listarOrgaos() {
+    return new Promise<any>((resolve, reject) => {
+      this.apiService.request({
+        url: this.apiService.URL_ORGAO
+      }).then((response) =>{
+        this.maiorCodigo = -200;
+        response.json.forEach(orgao => {
+          this.maiorCodigo = Math.max(this.maiorCodigo, orgao.codigo);
+        });
+        resolve(response)
+      }).catch(reject);
+    });
+  }
+
   public salvarOrgao(orgao: Orgao) {
+    debugger;
+    let json = JSON.parse(JSON.stringify(orgao));
+    let method;
+    let url = `${this.apiService.URL_ORGAO}`;
+    let novoCodigo = this.maiorCodigo + 1;
     if (orgao.codigo) {
-      return this.http.post(`${this.URL_ORGAO}/${orgao.codigo}`, orgao, this.getDefaultRequestOptions());
+      method = "PUT";
+      url += `/${orgao.codigo}`;
     } else {
-      return this.http.put(this.URL_ORGAO, orgao, this.getDefaultRequestOptions());
+      method = "POST";
+      json.codigo = novoCodigo
     }
+
+    return new Promise<any>((resolve, reject) => {
+      this.apiService.request({
+        method: method,
+        url: url,
+        body : json
+      }).then((response) =>{
+        if (method == "POST") {
+          this.maiorCodigo = novoCodigo;
+        }
+        resolve(response);
+      })
+      .catch(reject);
+    });
   }
 
   public deletarOrgao(orgao: Orgao) {
-    return this.http.delete(`${this.URL_ORGAO}/${orgao.codigo}`, this.getDefaultRequestOptions());
+    return this.apiService.request({
+      method: "DELETE",
+      url: `${this.apiService.URL_ORGAO}/${orgao.codigo}`,
+      body : orgao
+    });
   }
 
 }
