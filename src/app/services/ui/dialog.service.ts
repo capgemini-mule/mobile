@@ -49,7 +49,7 @@ export class DialogService {
     this.loading = null;
     this.isLoading = false;
 
-    if (callback != null) {
+    if (callback) {
       callback();
     }
   }

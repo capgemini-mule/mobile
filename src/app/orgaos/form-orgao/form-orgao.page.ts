@@ -58,14 +58,29 @@ export class FormOrgaoPage implements OnInit {
 
     this.dialogService.showLoading("Salvando os dados, aguarde...");
     this.autenticacaoService.salvarOrgao(orgao)
-        .then( result => {
-          this.dialogService.hideLoading();
+        .then( () => {
+          this.dialogService.hideLoading(() =>{
+            this.dialogOrgao();
+          });
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
             this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
+  }
+
+  private dialogOrgao() {
+    let callback = null;
+    let msg = "Orgão criado com sucesso."
+    if (!this.orgao) {
+      msg = "Orgão criado com sucesso.";
+      callback = () =>{ this.navCtrl.pop(); };
+    } else {
+      msg = "Orgão alterado com sucesso.";
+    }
+
+    this.dialogService.showDialog("", "", msg, null, callback);
   }
 
   deletar() {
@@ -77,8 +92,8 @@ export class FormOrgaoPage implements OnInit {
 
   private requestDelete() {
     this.dialogService.showLoading("Removendo o orgão, aguarde...");
-    this.autenticacaoService.salvarOrgao(this.orgao)
-        .then( result => {
+    this.autenticacaoService.deletarOrgao(this.orgao)
+        .then( () => {
           this.dialogService.hideLoading(() => {
             this.navCtrl.pop();
           });

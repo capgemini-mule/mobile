@@ -7,6 +7,7 @@ import { NavController, AlertController } from '@ionic/angular';
 import { Orgao } from '../types/Orgao';
 import { ApiService } from './api.service';
 import { RequestInscricaoMatricula } from '../types/RequestInscricaoMatricula';
+import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class AutenticacaoService {
   readonly STORAGE_KEY_USER = "lastUser"
 
   public static usuario = new Usuario()
+
+  // os codigos dos orgaos cadastrados devem ser enviados (NÃO são auto-increment na tabela)
+  // por isso vamos manter o maior para salvar um novo como maiorCodigo + 1
+  private maiorCodigo: number;
 
 
   constructor(private storage: Storage, 
@@ -36,6 +41,7 @@ export class AutenticacaoService {
         }
       })
       .then((result) => {
+        debugger;
         let autenticacao = result.json;
         if(autenticacao.access_token) {
           this.apiService.setAccessToken(autenticacao.access_token);
@@ -171,25 +177,45 @@ export class AutenticacaoService {
   // orgaos
 
   listarOrgaos() {
-    return this.apiService.request({
-      url: this.apiService.URL_ORGAO
+    return new Promise<any>((resolve, reject) => {
+      this.apiService.request({
+        url: this.apiService.URL_ORGAO
+      }).then((response) =>{
+        this.maiorCodigo = -200;
+        response.json.forEach(orgao => {
+          this.maiorCodigo = Math.max(this.maiorCodigo, orgao.codigo);
+        });
+        resolve(response)
+      }).catch(reject);
     });
   }
 
   public salvarOrgao(orgao: Orgao) {
+    debugger;
+    let json = JSON.parse(JSON.stringify(orgao));
     let method;
     let url = `${this.apiService.URL_ORGAO}`;
+    let novoCodigo = this.maiorCodigo + 1;
     if (orgao.codigo) {
-      method = "POST";
+      method = "PUT";
       url += `/${orgao.codigo}`;
     } else {
-      method = "PUT";
+      method = "POST";
+      json.codigo = novoCodigo
     }
 
-    return this.apiService.request({
-      method: method,
-      url: url,
-      body : orgao
+    return new Promise<any>((resolve, reject) => {
+      this.apiService.request({
+        method: method,
+        url: url,
+        body : json
+      }).then((response) =>{
+        if (method == "POST") {
+          this.maiorCodigo = novoCodigo;
+        }
+        resolve(response);
+      })
+      .catch(reject);
     });
   }
 
