@@ -65,7 +65,7 @@ export class AutenticacaoService {
         AutenticacaoService.usuario = result.json
         AutenticacaoService.usuario.accessToken = acessToken
         this.apiService.setAccessToken(acessToken);
-        resolve();
+        resolve(result);
       }, reject);
     }); 
   }
