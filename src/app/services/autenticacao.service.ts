@@ -38,6 +38,7 @@ export class AutenticacaoService {
       .then((result) => {
         let autenticacao = result.json;
         if(autenticacao.access_token) {
+          this.apiService.setAccessToken(autenticacao.access_token);
           this.dadosUsuario(usuario, autenticacao.access_token)
             .then(resolve)
             .catch(reject);
@@ -96,6 +97,7 @@ export class AutenticacaoService {
   }
 
   clearUserAndLeave() {
+    this.apiService.setAccessToken(null);
     this.setUser(null, () => {
       this.dialogService.hideLoading(() => {
         this.goToLogin()
