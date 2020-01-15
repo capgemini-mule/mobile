@@ -12,7 +12,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent {
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar
   ) {
     this.initializeApp();
@@ -20,8 +19,9 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.statusBar.styleLightContent();
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      this.statusBar.overlaysWebView(false);
     });
   }
 }

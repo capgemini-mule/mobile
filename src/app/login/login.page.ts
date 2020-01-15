@@ -1,8 +1,9 @@
 import { DialogService } from './../services/ui/dialog.service';
 import { Component, OnInit } from '@angular/core';
-import {  NavController } from '@ionic/angular';
+import {  NavController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AutenticacaoService } from '../services/autenticacao.service'
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,12 @@ export class LoginPage implements OnInit {
 
   formLogin = { username: '', password: ''}
 
-  constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, private storage: Storage, private dialogService: DialogService) { 
+  constructor(public navCtrl: NavController,
+    public autenticacaoService: AutenticacaoService,
+    private storage: Storage,
+    private dialogService: DialogService,
+    private platform: Platform,
+    private splashScreen: SplashScreen) { 
   }
 
   ngOnInit() {
@@ -24,7 +30,14 @@ export class LoginPage implements OnInit {
     this.storage.clear()
   }
 
-  ngAfterViewInit() {
+  ionViewDidEnter() {
+    this.platform.ready().then(() => {
+      this.splashScreen.hide();
+      this.checkLoggedUser();
+    });
+  }
+
+  private checkLoggedUser() {
     this.storage.get(this.autenticacaoService.STORAGE_KEY_USER).then((val) => {
       if(val) {
         if (val.accessToken) {
