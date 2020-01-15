@@ -143,6 +143,12 @@ export class AutenticacaoService {
     });
   }
 
+  resetSenha(email: string) {
+    return this.apiService.request({
+      url: `${this.apiService.URL_RESET_SENHA}/${email}`
+    });
+  }
+
   listarServicos()  {
     // ios-
     return new Promise<any>((resolve, reject)=>{

@@ -33,6 +33,7 @@ export class ApiService {
   readonly URL_LOGIN: string = "http://autorizacao-proxy.br-s1.cloudhub.io/token"
   readonly URL_LOGOUT: string = "http://autorizacao-proxy.br-s1.cloudhub.io/logout"
   readonly URL_CADASTRAR: string = "http://autorizacao-proxy.br-s1.cloudhub.io/signup"
+  readonly URL_RESET_SENHA: string = "http://autorizacao-proxy.br-s1.cloudhub.io/reset"
   readonly URL_PERFIL: string = "http://autorizacao-proxy.br-s1.cloudhub.io/userinfo/{email}"
   readonly URL_SERVICOS: string = "http://servicos-proxy.br-s1.cloudhub.io/servicos"
   readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipoidentificacao-proxy.br-s1.cloudhub.io/tipoIdentificacao"

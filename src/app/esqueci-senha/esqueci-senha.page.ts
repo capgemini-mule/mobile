@@ -23,18 +23,26 @@ export class EsqueciSenhaPage implements OnInit {
   }
 
   esqueci_senha() {
-
+    this.formEsqueci.email = this.formEsqueci.email.trim();
+    
     if(!this.viewService.isValidEmail(this.formEsqueci.email)) {  
       this.dialogService.showDialog("Atenção", "", "Preencha um e-mail válido.");
     } else {
       this.dialogService.showLoading("Efetuando solicitação de nova senha, aguarde...");
-      setTimeout(() => {
-        this.dialogService.hideLoading(() => {
-          this.dialogService.showDialog("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", [{text: 'OK', handler: () => {
-            this.autenticacaoService.goToLogin()
-          }}])
+
+      this.autenticacaoService.resetSenha(this.formEsqueci.email)
+        .then(() =>{
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog("Esqueci minha senha", "", "Link para gerar nova senha enviada por e-mail.", [{text: 'OK', handler: () => {
+              this.autenticacaoService.goToLogin();
+            }}]);
+          });
+        })
+        .catch((err) => {
+          this.dialogService.hideLoading(() => {
+            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
+          });
         });
-      }, 2000);
     }
   }
 }
