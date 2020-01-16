@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
+import { Http, ResponseType, ResponseContentType } from '@angular/http';
 
 export interface RequestOptions {
   url: string;
@@ -46,7 +47,8 @@ export class ApiService {
 
   private accessToken : string = null;
 
-  constructor(private http: HTTP) {
+  constructor(private http: HTTP,
+    private httpBrowser: Http) {
   }
 
   setAccessToken(token: string) {
@@ -57,18 +59,41 @@ export class ApiService {
     return navigator.onLine;
   }
 
+  private requestBrowser( options: any): Promise<any> {
+    return this.httpBrowser.request(options.url, {
+      body : options.body,
+      headers: options.headers,
+      method: options.method,
+      params: options.params,
+      responseType: ResponseContentType.Json
+    }).toPromise();
+  }
+
+  private requestNative(options: any): Promise<any> {
+    switch (options.method) {
+      case 'DELETE':
+        return this.http.delete(options.url, options.params, options.headers);
+      case 'PATCH':
+        return this.http.patch(options.url, options.body, options.headers);
+      case 'PUT':
+        return this.http.put(options.url, options.body, options.headers);
+      case 'POST':
+        return this.http.post(options.url, options.body, options.headers);
+      // case 'GET':
+      default:
+        return this.http.get(options.url, options.params, options.headers);
+    }
+  }
+
   public request(reqOptions: RequestOptions): Promise<any> {
     if (!this.isOnline()) {
       return Promise.reject(this.montarErroTipo(TipoErro.SEM_INTERNET));
     }
 
-    const url = reqOptions.url;
-    const body = reqOptions.body;
-    const method = reqOptions.method ? reqOptions.method.toUpperCase() : 'GET';
-
-    this.http.setDataSerializer(reqOptions.serialize ? reqOptions.serialize : 'json');
-
     const options = {
+      method: reqOptions.method ? reqOptions.method.toUpperCase() : 'GET',
+      url: reqOptions.url,
+      body: reqOptions.body,
       headers: null,
       params: null,
     };
@@ -99,37 +124,34 @@ export class ApiService {
       }
     }
 
-
-    let promise: Promise<HTTPResponse>;
-    switch (method) {
-      case 'DELETE':
-        promise = this.http.delete(url, options.params, options.headers);
-        break;
-      case 'PATCH':
-        promise = this.http.patch(url, body, options.headers);
-        break;
-      case 'PUT':
-        promise = this.http.put(url, body, options.headers);
-        break;
-      case 'POST':
-        promise = this.http.post(url, body, options.headers);
-        break;
-      // case 'GET':
-      default:
-        promise = this.http.get(url, options.params, options.headers);
-        break;
-    }
-
     const responseJson = reqOptions.responseType !== 'text';
+
+    let promise: Promise<any>;
+    let isNative = window.cordova;
+    if (isNative) {
+      this.http.setDataSerializer(reqOptions.serialize ? reqOptions.serialize : 'json');
+      promise = this.requestNative(options);
+    } else {
+      promise = this.requestBrowser(options);
+    }
 
     return new Promise<any>((resolve, reject) => {
       promise
         .then((res) => {
           const response = { ...res };
-          if (responseJson && !!res.data) {
-            response['json'] = JSON.parse(res.data);
+          if (isNative) {
+            if (responseJson && !!res.data) {
+              response['json'] = JSON.parse(res.data);
+            }
+            resolve(response);
+          } else { // browser
+            if ( responseJson ) {
+              response['json'] = res.json();
+            } else if ( res.type == ResponseContentType.Text ) {
+              response['text'] = res.text();
+            }
+            resolve(response);
           }
-          resolve(response);
         })
         .catch((error: HTTPResponse) => {
           reject(this.montarErroHttp(error));

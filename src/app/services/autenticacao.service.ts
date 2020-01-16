@@ -41,7 +41,6 @@ export class AutenticacaoService {
         }
       })
       .then((result) => {
-        debugger;
         let autenticacao = result.json;
         if(autenticacao.access_token) {
           this.apiService.setAccessToken(autenticacao.access_token);
@@ -207,7 +206,6 @@ export class AutenticacaoService {
   }
 
   public salvarOrgao(orgao: Orgao) {
-    debugger;
     let json = JSON.parse(JSON.stringify(orgao));
     let method;
     let url = `${this.apiService.URL_ORGAO}`;
