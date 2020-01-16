@@ -1,29 +1,52 @@
 import { DialogService } from './../services/ui/dialog.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import {  NavController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AutenticacaoService } from '../services/autenticacao.service'
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
 
   formLogin = { username: '', password: ''}
+  showFooter = true;
+
+  private keyboardCloseListener = () => {
+    this.ngZone.run(() => {
+      this.showFooter = true;
+    });
+  };
+  private keyboardOpenListener = () => {
+    this.ngZone.run(() => {
+      this.showFooter = false;
+    });
+  };
 
   constructor(public navCtrl: NavController,
     public autenticacaoService: AutenticacaoService,
     private storage: Storage,
     private dialogService: DialogService,
     private platform: Platform,
-    private splashScreen: SplashScreen) { 
+    private splashScreen: SplashScreen,
+    public keyboard: Keyboard,
+    private ngZone: NgZone) { 
   }
 
   ngOnInit() {
     //this.clearStorage()
+
+    window.addEventListener('keyboardDidHide', this.keyboardCloseListener);
+    window.addEventListener('keyboardDidShow', this.keyboardOpenListener);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('keyboardDidHide', this.keyboardCloseListener);
+    window.removeEventListener('keyboardDidShow', this.keyboardOpenListener);
   }
 
   clearStorage() {
@@ -95,6 +118,6 @@ export class LoginPage implements OnInit {
   }
 
   openLinkExterno(local) {
-    window.open(local);
+    window.open(local, "_system");
   }
 }

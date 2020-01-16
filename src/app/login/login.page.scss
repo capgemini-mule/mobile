@@ -57,6 +57,10 @@ ion-input{
     text-align: center;
     font-size: 18px;
     font-weight: bold;
+
+    &.hide {
+        display: none;
+    }
 }
 
 
