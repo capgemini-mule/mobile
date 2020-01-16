@@ -40,16 +40,33 @@ export class CadastrarUsuarioPage implements OnInit {
   }
 
   cadastrar() {
+    for (const key in this.formCadastro) {
+      if (this.formCadastro.hasOwnProperty(key) && this.formCadastro[key].trim) {
+        this.formCadastro[key] = this.formCadastro[key].trim();
+      }
+    }    
 
-    if(this.formCadastro.nome === "") { this.inputFirstName.setFocus(); }
-    else if(this.formCadastro.sobrenome === "") { this.inputLastName.setFocus(); }
-    else if(!this.viewService.isValidCpf(this.formCadastro.cpf)) { this.inputCpf.setFocus(); }
-    else if(!this.viewService.isValidEmail(this.formCadastro.email)) { this.inputEmail.setFocus(); }
-    else if(this.formCadastro.senha === "") { this.inputPassword.setFocus(); }
-    else if(this.formCadastro.confirmarSenha === "") { this.inputConfirmPassword.setFocus(); }
-    else if(this.formCadastro.senha !== this.formCadastro.confirmarSenha) {
+    if(this.formCadastro.nome === "") {
+      this.inputFirstName.setFocus();
+      this.dialogService.showDialog("Nome", "", "Preencha o nome");
+    } else if(this.formCadastro.sobrenome === "") {
+      this.inputLastName.setFocus();
+      this.dialogService.showDialog("Sobrenome", "", "Preencha o sobrenome");
+    } else if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
+      this.inputCpf.setFocus();
+      this.dialogService.showDialog("CPF", "", "CPF inválido");
+    } else if(!this.viewService.isValidEmail(this.formCadastro.email)) {
+      this.inputEmail.setFocus();
+      this.dialogService.showDialog("Email", "", "Email inválido");
+    } else if(this.formCadastro.senha === "") {
+      this.inputPassword.setFocus();
+      this.dialogService.showDialog("Senha", "", "Preencha a senha");
+    } else if(this.formCadastro.confirmarSenha === "") {
       this.inputConfirmPassword.setFocus();
-      this.dialogService.showDialog("Senha", "", "A senha e a confirmação de senha não coincidem."); 
+      this.dialogService.showDialog("Confirmação de senha", "", "Repita a senha no campo de confirmação");
+    } else if(this.formCadastro.senha !== this.formCadastro.confirmarSenha) {
+      this.inputConfirmPassword.setFocus();
+      this.dialogService.showDialog("Senha", "", "A senha e a confirmação de senha não coincidem.");
     } else if(this.formCadastro.accept === false) {  
       this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
     } else {

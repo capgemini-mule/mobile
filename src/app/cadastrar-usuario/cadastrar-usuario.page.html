@@ -39,12 +39,12 @@
                 <ion-input maxlength="8" [(ngModel)]="formCadastro.confirmarSenha" placeholder="Confirmar senha" type="password" required #confirmPassword></ion-input>
             </ion-item>
 
-            <ion-item>
+            <ion-item lines="none">
                     <ion-toggle [(ngModel)]="formCadastro.accept" required #accept></ion-toggle>
                     <ion-label>Aceito os Termos e Condições de Uso</ion-label>
             </ion-item>
     
-            <ion-item> 
+            <ion-item lines="none" > 
                     <ion-button expand="full" class="bt_cadastro" (click)="cadastrar()">Cadastrar-se</ion-button>
             </ion-item>
     
