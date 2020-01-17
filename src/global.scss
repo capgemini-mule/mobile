@@ -31,7 +31,17 @@ ion-header ion-toolbar:first-child{
     background: #2d59a8 !important;
     color: #FFFFFF !important;
     font-weight: bold;
-    text-align: center;
+}
+
+ion-title {
+    &.centro {
+        text-align: center;
+    }
+
+    &.margemLeft {
+        margin-left: 48px;
+    }
+    
 }
 
 ion-label{
