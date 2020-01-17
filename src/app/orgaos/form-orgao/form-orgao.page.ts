@@ -17,7 +17,7 @@ export class FormOrgaoPage implements OnInit {
     nome : ''
   }
 
-  private orgao: Orgao;
+  orgao: Orgao;
 
   constructor(private navegacaoService: NavegacaoService,
     private dialogService: DialogService,

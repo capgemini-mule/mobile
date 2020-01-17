@@ -65,7 +65,7 @@ export class Tab1Page {
     this.not_found = true;
   }
 
-  ocultarSearch() {
+  ocultarSearch(event) {
     this.input_search = false;
     this.ngOnInit();
   }
