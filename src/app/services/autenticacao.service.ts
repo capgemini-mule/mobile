@@ -143,8 +143,9 @@ export class AutenticacaoService {
   }
 
   resetSenha(email: string) {
+    let emailEncoded = encodeURIComponent(email);
     return this.apiService.request({
-      url: `${this.apiService.URL_RESET_SENHA}/${email}`
+      url: `${this.apiService.URL_RESET_SENHA}/${emailEncoded}`
     });
   }
 
