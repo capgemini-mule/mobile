@@ -142,9 +142,16 @@ export class ApiService {
       promise = this.requestBrowser(options);
     }
 
+    ////////
+    console.log(`[API] request ${options.method} - ${options.url}`);
+    ////////
+
     return new Promise<any>((resolve, reject) => {
       promise
         .then((res) => {
+          ////////
+          console.log(`[API] response ${options.method} - ${options.url} , `, res);
+          ////////
           const response = { ...res };
           if (isNative) {
             if (responseJson && !!res.data) {
@@ -160,7 +167,10 @@ export class ApiService {
             resolve(response);
           }
         })
-        .catch((error: HTTPResponse) => {
+        .catch((error: any) => {
+          ////////
+          console.log(`[API] error ${options.method} - ${options.url} , `, error);
+          ////////
           reject(this.montarErroHttp(error));
         });
     });
@@ -177,7 +187,6 @@ export class ApiService {
   }
 
   private montarErroHttp(erroHttp: any): ErroHttp {
-    console.log('montarErroHttp erroHttp = ', erroHttp);
     const erro = {
       status: erroHttp.status,
       tipo: TipoErro.API,

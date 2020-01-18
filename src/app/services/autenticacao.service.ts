@@ -89,6 +89,7 @@ export class AutenticacaoService {
             this.apiService.request({
               method: 'POST',
               url: this.apiService.URL_LOGOUT,
+              body: {}
             }).then(result => {
               this.clearUserAndLeave()
             }, err => {
