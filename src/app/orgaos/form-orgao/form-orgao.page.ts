@@ -72,26 +72,26 @@ export class FormOrgaoPage implements OnInit {
 
   private dialogOrgao() {
     let callback = null;
-    let msg = "Orgão criado com sucesso."
+    let msg = "Órgão criado com sucesso."
     if (!this.orgao) {
-      msg = "Orgão criado com sucesso.";
+      msg = "Órgão criado com sucesso.";
       callback = () =>{ this.navCtrl.pop(); };
     } else {
-      msg = "Orgão alterado com sucesso.";
+      msg = "Órgão alterado com sucesso.";
     }
 
     this.dialogService.showDialog("", "", msg, null, callback);
   }
 
   deletar() {
-    this.dialogService.confirm("Deseja remover o orgão?")
+    this.dialogService.confirm("Deseja remover o órgão?")
       .then((confirmed) => {
         if (confirmed) this.requestDelete();
       });
   }
 
   private requestDelete() {
-    this.dialogService.showLoading("Removendo o orgão, aguarde...");
+    this.dialogService.showLoading("Removendo o órgão, aguarde...");
     this.autenticacaoService.deletarOrgao(this.orgao)
         .then( () => {
           this.dialogService.hideLoading(() => {
