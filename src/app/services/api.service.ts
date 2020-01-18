@@ -31,19 +31,20 @@ declare let navigator;
 })
 export class ApiService {
 
+  // URLs provisórias:
   readonly URL_LOGIN: string = "http://teste-signon-sem-ssl.us-e2.cloudhub.io/api/token"
   readonly URL_CADASTRAR: string = "http://teste-signon-sem-ssl.us-e2.cloudhub.io/api/signup"
   readonly URL_LOGOUT: string = "http://teste-signon-sem-ssl.us-e2.cloudhub.io/api/logout"
   readonly URL_RESET_SENHA: string = "http://teste-signon-sem-ssl.us-e2.cloudhub.io/api/reset"
   readonly URL_PERFIL: string = "http://teste-signon-sem-ssl.us-e2.cloudhub.io/api/userinfo/{email}"
-
+  readonly URL_SERVICOS: string = "http://104.41.9.232:8081/api/servicos"
 
   // readonly URL_LOGIN: string = "http://autorizacao-proxy.br-s1.cloudhub.io/token"
   // readonly URL_LOGOUT: string = "http://autorizacao-proxy.br-s1.cloudhub.io/logout"
   // readonly URL_CADASTRAR: string = "http://autorizacao-proxy.br-s1.cloudhub.io/signup"
   // readonly URL_RESET_SENHA: string = "http://autorizacao-proxy.br-s1.cloudhub.io/reset"
   // readonly URL_PERFIL: string = "http://autorizacao-proxy.br-s1.cloudhub.io/userinfo/{email}"
-  readonly URL_SERVICOS: string = "http://servicos-proxy.br-s1.cloudhub.io/servicos"
+  // readonly URL_SERVICOS: string = "http://servicos-proxy.br-s1.cloudhub.io/servicos"
   readonly URL_TIPOS_IDENTIFICACAO: string = "http://tipoidentificacao-proxy.br-s1.cloudhub.io/tipoIdentificacao"
   readonly URL_ORGAO: string = "http://orgaos-proxy.br-s1.cloudhub.io/orgaos"
 
