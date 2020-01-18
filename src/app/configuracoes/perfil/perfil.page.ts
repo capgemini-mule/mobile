@@ -20,6 +20,9 @@ export class PerfilPage implements OnInit {
   ngAfterViewInit() {
     this.iniciaDadosUsuario();
   }
+  getUsername() {
+    return AutenticacaoService.usuario ? AutenticacaoService.usuario.username : "";
+  }
 
   getNome() {
     if (AutenticacaoService.usuario) {
