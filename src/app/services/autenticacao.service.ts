@@ -8,6 +8,7 @@ import { Orgao } from '../types/Orgao';
 import { ApiService } from './api.service';
 import { RequestInscricaoMatricula } from '../types/RequestInscricaoMatricula';
 import { resolve } from 'url';
+import { CadastroUsuario } from '../types/CadastroUsuario';
 
 @Injectable({
   providedIn: 'root'
@@ -135,11 +136,21 @@ export class AutenticacaoService {
     this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
-  cadastrarUsuario(form: any) {
+  cadastrarUsuario(form: CadastroUsuario) {
+
+    // api falta corrigir os nomes dos campos:
+    const json = {
+      "nome": form.username,
+      "sobrenome": form.nomeCompleto,
+      "cpf": form.cpf,
+      "email": form.email,
+      "senha": form.senha
+    };
+
     return this.apiService.request({
       method: "post",
       url: this.apiService.URL_CADASTRAR,
-      body: form
+      body: json
     });
   }
 

@@ -16,15 +16,15 @@
       <ion-list class="ion-padding">
 
             <ion-item>
-                <ion-input maxlength="100" [(ngModel)]="formCadastro.nome" placeholder="Nome completo" type="text" required #firstName></ion-input>
-            </ion-item>
-
-            <ion-item>
-                <ion-input  maxlength="100" [(ngModel)]="formCadastro.sobrenome" placeholder="Nome de usuário" type="text" required #lastName></ion-input>
+                <ion-input maxlength="100" [(ngModel)]="formCadastro.nomeCompleto" placeholder="Nome completo" type="text" required #nomeCompleto></ion-input>
             </ion-item>
 
             <ion-item>
                 <ion-input maxlength="14" [(ngModel)]="formCadastro.cpf" placeholder="CPF" (ionChange)="this.onCpfChange($event)" type="tel" required #cpf></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-input  maxlength="100" [(ngModel)]="formCadastro.username" placeholder="Usuário" type="text" required #username></ion-input>
             </ion-item>
 
             <ion-item>

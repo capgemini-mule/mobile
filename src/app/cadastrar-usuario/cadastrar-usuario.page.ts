@@ -3,6 +3,7 @@ import {  IonInput } from '@ionic/angular';
 import { AutenticacaoService } from '../services/autenticacao.service'
 import { DialogService } from './../services/ui/dialog.service';
 import { ViewService } from './../services/ui/view.service';
+import { CadastroUsuario } from '../types/CadastroUsuario';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -12,17 +13,17 @@ import { ViewService } from './../services/ui/view.service';
 export class CadastrarUsuarioPage implements OnInit {
   
   @ViewChild('accept', { static:false })  inputAccept: IonInput;
-  @ViewChild('firstName', { static:false })  inputFirstName: IonInput;
-  @ViewChild('lastName', { static:false })  inputLastName: IonInput;
+  @ViewChild('nomeCompleto', { static:false })  inputNomeCompleto: IonInput;
+  @ViewChild('username', { static:false })  inputUsername: IonInput;
   @ViewChild('cpf', { static:false })  inputCpf: IonInput;
   @ViewChild('email', { static:false })  inputEmail: IonInput;
   @ViewChild('password', { static:false })  inputPassword: IonInput;
   @ViewChild('confirmPassword', { static:false })  inputConfirmPassword: IonInput;
 
-  formCadastro: any = {
+  formCadastro: CadastroUsuario = {
       accept: false,
-      nome: "",
-      sobrenome: "",
+      username: "",
+      nomeCompleto: "",
       cpf: "",
       email: "",
       senha: "",
@@ -41,20 +42,22 @@ export class CadastrarUsuarioPage implements OnInit {
 
   cadastrar() {
     for (const key in this.formCadastro) {
-      if (this.formCadastro.hasOwnProperty(key) && this.formCadastro[key].trim) {
+      if (this.formCadastro.hasOwnProperty(key)
+        && this.formCadastro[key]
+        && this.formCadastro[key].trim) {
         this.formCadastro[key] = this.formCadastro[key].trim();
       }
     }    
 
-    if(this.formCadastro.nome === "") {
-      this.inputFirstName.setFocus();
-      this.dialogService.showDialog("Nome", "", "Preencha o nome");
-    } else if(this.formCadastro.sobrenome === "") {
-      this.inputLastName.setFocus();
-      this.dialogService.showDialog("Sobrenome", "", "Preencha o sobrenome");
+    if(this.formCadastro.nomeCompleto === "") {
+      this.inputNomeCompleto.setFocus();
+      this.dialogService.showDialog("Nome", "", "Preencha seu nome completo");
     } else if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
       this.inputCpf.setFocus();
       this.dialogService.showDialog("CPF", "", "CPF inválido");
+    } else if(this.formCadastro.username === "") {
+      this.inputUsername.setFocus();
+      this.dialogService.showDialog("Usuário", "", "Preencha seu nome de usuário");
     } else if(!this.viewService.isValidEmail(this.formCadastro.email)) {
       this.inputEmail.setFocus();
       this.dialogService.showDialog("Email", "", "Email inválido");
