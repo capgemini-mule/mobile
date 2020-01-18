@@ -51,13 +51,23 @@ export class CadastrarUsuarioPage implements OnInit {
 
     if(this.formCadastro.nomeCompleto === "") {
       this.inputNomeCompleto.setFocus();
-      this.dialogService.showDialog("Nome", "", "Preencha seu nome completo");
-    } else if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
+      this.dialogService.showDialog("Nome completo", "", "Preencha seu nome completo");
+      return;
+    }
+
+    let objNomeCompleto = this.viewService.splitNomeCompleto(this.formCadastro.nomeCompleto);
+    if (!objNomeCompleto) {
+      this.inputNomeCompleto.setFocus();
+      this.dialogService.showDialog("Nome completo", "", "O nome completo deve ter nome e sobrenome");
+      return;
+    }
+    
+    if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
       this.inputCpf.setFocus();
       this.dialogService.showDialog("CPF", "", "CPF inválido");
     } else if(this.formCadastro.username === "") {
       this.inputUsername.setFocus();
-      this.dialogService.showDialog("Usuário", "", "Preencha seu nome de usuário");
+      this.dialogService.showDialog("Nome de usuário", "", "Preencha seu nome de usuário");
     } else if(!this.viewService.isValidEmail(this.formCadastro.email)) {
       this.inputEmail.setFocus();
       this.dialogService.showDialog("Email", "", "Email inválido");
@@ -74,7 +84,7 @@ export class CadastrarUsuarioPage implements OnInit {
       this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
     } else {
       this.dialogService.showLoading("Efetuando cadastro, aguarde...");
-      this.autenticacaoService.cadastrarUsuario(this.formCadastro)
+      this.autenticacaoService.cadastrarUsuario(this.formCadastro, objNomeCompleto)
         .then( result => {
               let retorno = result.json;
               if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {

@@ -137,12 +137,14 @@ export class AutenticacaoService {
     this.navCtrl.navigateRoot('/tabs/tab1');
   }
 
-  cadastrarUsuario(form: CadastroUsuario) {
+  cadastrarUsuario(form: CadastroUsuario, obj: {nome: string, sobrenome: string}) {
 
     // api falta corrigir os nomes dos campos:
     const json = {
-      "nome": form.username,
-      "sobrenome": form.nomeCompleto,
+      "username": form.username,
+      "nome": obj.nome,
+      "sobrenome": obj.sobrenome,
+      "nomeCompleto": form.nomeCompleto,
       "cpf": form.cpf,
       "email": form.email,
       "senha": form.senha

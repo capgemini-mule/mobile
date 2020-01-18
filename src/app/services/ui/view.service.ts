@@ -7,6 +7,25 @@ export class ViewService {
 
   constructor() { }
 
+  /**
+   * Valida e devolve um objeto com o nome e sobrenome
+   */
+  public splitNomeCompleto(nomeCompleto: string)  {
+    let obj: { nome: string, sobrenome: string } = {nome : '', sobrenome : ''};
+    let split = nomeCompleto.trim()
+      .split(" ")
+      .filter((str) =>{ return str != "" });
+
+    if (split.length < 2) {
+      return null;
+    }
+
+    obj.nome = split[0];
+    split[0] = "";
+    obj.sobrenome = split.join(" ");
+    return obj;
+  }
+
   public isValidEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
