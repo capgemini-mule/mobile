@@ -56,10 +56,11 @@ export class AutenticacaoService {
   }
 
   public dadosUsuario(email: string, acessToken: string) {
+    let emailEncoded = encodeURIComponent(email);
     return new Promise<any>((resolve, reject) =>{
       this.apiService.request({
         method: 'GET',
-        url : this.apiService.URL_PERFIL.replace('{email}', email),
+        url : this.apiService.URL_PERFIL.replace('{email}', emailEncoded),
       }).then( result => {
         AutenticacaoService.usuario = result.json
         AutenticacaoService.usuario.accessToken = acessToken
