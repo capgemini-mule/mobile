@@ -41,12 +41,12 @@ export class LoginPage implements OnInit, OnDestroy {
     //this.clearStorage()
 
     window.addEventListener('keyboardDidHide', this.keyboardCloseListener);
-    window.addEventListener('keyboardDidShow', this.keyboardOpenListener);
+    window.addEventListener('keyboardWillShow', this.keyboardOpenListener);
   }
 
   ngOnDestroy() {
     window.removeEventListener('keyboardDidHide', this.keyboardCloseListener);
-    window.removeEventListener('keyboardDidShow', this.keyboardOpenListener);
+    window.removeEventListener('keyboardWillShow', this.keyboardOpenListener);
   }
 
   clearStorage() {
