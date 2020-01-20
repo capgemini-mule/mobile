@@ -15,7 +15,7 @@ export class CadastrarUsuarioPage implements OnInit {
   @ViewChild('accept', { static:false })  inputAccept: IonInput;
   @ViewChild('nomeCompleto', { static:false })  inputNomeCompleto: IonInput;
   @ViewChild('username', { static:false })  inputUsername: IonInput;
-  @ViewChild('cpf', { static:false })  inputCpf: IonInput;
+//  @ViewChild('cpf', { static:false })  inputCpf: IonInput;
   @ViewChild('email', { static:false })  inputEmail: IonInput;
   @ViewChild('password', { static:false })  inputPassword: IonInput;
   @ViewChild('confirmPassword', { static:false })  inputConfirmPassword: IonInput;
@@ -24,7 +24,7 @@ export class CadastrarUsuarioPage implements OnInit {
       accept: false,
       username: "",
       nomeCompleto: "",
-      cpf: "",
+//      cpf: "",
       email: "",
       senha: "",
       confirmarSenha: ""
@@ -37,7 +37,7 @@ export class CadastrarUsuarioPage implements OnInit {
   }
 
   public onCpfChange($event){
-    this.formCadastro.cpf = this.viewService.maskCpf(this.formCadastro.cpf)
+//    this.formCadastro.cpf = this.viewService.maskCpf(this.formCadastro.cpf)
   }
 
   cadastrar() {
@@ -62,10 +62,11 @@ export class CadastrarUsuarioPage implements OnInit {
       return;
     }
     
-    if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
-      this.inputCpf.setFocus();
-      this.dialogService.showDialog("CPF", "", "CPF inválido");
-    } else if(this.formCadastro.username === "") {
+    // if(!this.viewService.isValidCpf(this.formCadastro.cpf)) {
+    //   this.inputCpf.setFocus();
+    //   this.dialogService.showDialog("CPF", "", "CPF inválido");
+    // } 
+    if(this.formCadastro.username === "") {
       this.inputUsername.setFocus();
       this.dialogService.showDialog("Nome de usuário", "", "Preencha seu nome de usuário");
     } else if(!this.viewService.isValidEmail(this.formCadastro.email)) {
@@ -87,7 +88,7 @@ export class CadastrarUsuarioPage implements OnInit {
       this.autenticacaoService.cadastrarUsuario(this.formCadastro, objNomeCompleto)
         .then( result => {
               let retorno = result.json;
-              if(retorno.message === "Cadastro concluído com sucesso. Você pode fazer login com suas credenciais.") {
+              if(retorno.status === 200) {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog("Cadastro", "", "Cadastro Efetuado com Sucesso.", [{text: 'OK', handler: () => {
                     this.autenticacaoService.goToLogin()

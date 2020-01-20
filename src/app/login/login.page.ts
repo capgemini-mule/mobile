@@ -87,7 +87,7 @@ export class LoginPage implements OnInit, OnDestroy {
         }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
+            this.dialogService.showDialog(this.dialogService.ERROR, "", "Não foi possível fazer o login");
           });
         });
     }
