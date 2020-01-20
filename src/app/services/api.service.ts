@@ -204,6 +204,10 @@ export class ApiService {
       mensagem: "Sua solicitação não pôde ser atendida. Por favor, tente novamente"
     };
 
+    if (erroHttp.status == 401) {
+      erro.mensagem = "Você não tem permissão para essa solicitação.";
+    }
+
     return erro;
   }
 

@@ -179,7 +179,7 @@ export class AutenticacaoService {
     }); 
   }
 
-  listarTiposIdentificacao() {
+  listarTiposIdentificacao() { 
     return this.apiService.request({
       url: this.apiService.URL_TIPOS_IDENTIFICACAO
     });
