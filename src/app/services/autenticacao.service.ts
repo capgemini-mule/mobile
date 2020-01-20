@@ -145,7 +145,7 @@ export class AutenticacaoService {
       "nome": obj.nome,
       "sobrenome": obj.sobrenome,
       "nomeCompleto": form.nomeCompleto,
-      "cpf": form.cpf,
+//      "cpf": form.cpf,
       "email": form.email,
       "senha": form.senha
     };
