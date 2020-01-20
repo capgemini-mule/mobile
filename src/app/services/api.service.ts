@@ -31,11 +31,11 @@ declare let navigator;
 })
 export class ApiService {
   // mais uma troca de URLs
-  readonly URL_LOGIN: string = "http://autorizacao-proxy.us-e2.cloudhub.io/api/token"
-  readonly URL_CADASTRAR: string = "http://autorizacao-proxy.us-e2.cloudhub.io/api/signup"
-  readonly URL_LOGOUT: string = "http://autorizacao-proxy.us-e2.cloudhub.io/api/logout"
-  readonly URL_RESET_SENHA: string = "http://autorizacao-proxy.us-e2.cloudhub.io/api/reset"
-  readonly URL_PERFIL: string = "http://autorizacao-proxy.us-e2.cloudhub.io/api/userinfo/{email}"
+  readonly URL_LOGIN: string = "http://autorizacao-proxy.us-e2.cloudhub.io/token"
+  readonly URL_CADASTRAR: string = "http://autorizacao-proxy.us-e2.cloudhub.io/signup"
+  readonly URL_LOGOUT: string = "http://autorizacao-proxy.us-e2.cloudhub.io/logout"
+  readonly URL_RESET_SENHA: string = "http://autorizacao-proxy.us-e2.cloudhub.io/reset"
+  readonly URL_PERFIL: string = "http://autorizacao-proxy.us-e2.cloudhub.io/userinfo/{email}"
 
   //mais uma provisoria:
   // readonly URL_RESET_SENHA: string = "http://reset.us-e2.cloudhub.io/api/reset"
