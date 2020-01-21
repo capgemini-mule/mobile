@@ -1,24 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="input_search==false" class="centro">
+    <ion-title class="centro">
       Salvador APP
     </ion-title>
 
-    <ion-searchbar *ngIf="input_search==true"
-        type = "search" 
-        placeholder="Pesquisar serviço"
-        (ionInput) = "filtrarServicos($event)" 
-        (ionCancel)="ocultarSearch($event)"
-        showCancelButton=true
-        clear-icon = "close"
-        showCancelButton="focus" cancelButtonText="Cancelar">         
-    </ion-searchbar>
-
-    <ion-buttons slot="start" *ngIf="input_search==false" (click)="openSearch()">
-        <ion-icon slot="icon-only" name="search"></ion-icon>
-    </ion-buttons>
-
-    <ion-buttons slot="end" *ngIf="input_search==false" (click)="logoff()">
+    <ion-buttons slot="end" (click)="logoff()">
         <ion-icon slot="icon-only" name="exit"></ion-icon>
     </ion-buttons>
 
@@ -35,7 +21,7 @@
       <ion-label>Olá, {{this.getNome()}}</ion-label>
     </ion-item>
 
-    <ion-list lines="none" *ngIf="not_found==false">
+    <ion-list lines="none">
       
       <ion-item-sliding *ngFor="let servico of lista_servicos">
           <ion-item (click)="openService(servico)">
@@ -43,51 +29,9 @@
               <ion-label>{{servico.label}}</ion-label>                      
           </ion-item>
       
-          <!--
-          <ion-item-options side="start">
-            <ion-item-option color="danger" (click)="like(servico)">
-              <ion-icon slot="icon-only" name="heart"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>-->
-      
-          <!--
-          <ion-item-options side="end">
-            <ion-item-option (click)="favorito(servico)">
-            <ion-icon slot="icon-only" name="star" [color]="iconColor(servico)"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-          -->
       </ion-item-sliding>
 
 
     </ion-list>
-    <ion-list lines="none" *ngIf="not_found==true">
-        <ion-card>
-            <ion-card-content>
-                Serviço não encontrado.
-            </ion-card-content>
-        </ion-card>
-    </ion-list>
 
-
-    <!--
-    <ion-fab vertical="bottom" horizontal="end">
-        <ion-fab-button>
-            <ion-icon name="share"></ion-icon>
-        </ion-fab-button>
-      
-        <ion-fab-list side="top">
-          <ion-fab-button>
-              <ion-icon name="logo-facebook"></ion-icon>              
-          </ion-fab-button>
-          <ion-fab-button>
-              <ion-icon name="logo-twitter"></ion-icon>
-          </ion-fab-button>
-          <ion-fab-button>
-              <ion-icon name="logo-youtube"></ion-icon>
-          </ion-fab-button>
-        </ion-fab-list>
-
-      </ion-fab>
-      -->
 </ion-content>

@@ -13,11 +13,7 @@ import { NavegacaoService } from '../services/ui/navegacao.service';
 })
 export class DashboardPage implements OnInit {
 
-  input_search: any = false;
-  not_found: any = false;
-
   lista_servicos: any = [];
-  lista_servicos_completa: any = []
 
   constructor(public navCtrl: NavController, public autenticacaoService: AutenticacaoService, 
     private dialogService: DialogService, private favoriteService: FavoriteService,
@@ -39,43 +35,14 @@ export class DashboardPage implements OnInit {
     this.dialogService.showLoading("Carregando lista de serviços, aguarde...");
     this.autenticacaoService.listarServicos()
         .then( result => {
-          this.lista_servicos = result.json; 
-          this.lista_servicos_completa = [].concat(result.json);
+          this.lista_servicos = result.json;
           this.dialogService.hideLoading();
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {
-            this.notFound();
             this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
           });
       });
-  }
-
-  filtrarServicos(itemSearch) {
-    var retorno = this.lista_servicos_completa.filter(el => el.label.toLowerCase().indexOf(itemSearch.target.value.toLowerCase()) > -1 );
-    
-    if(retorno.length > 0) {
-      this.not_found = false;
-      this.lista_servicos = retorno;
-    } else {
-      this.notFound();
-    }
-  }
-
-  notFound() {
-    this.not_found = true;
-  }
-
-  ocultarSearch(event) {
-    this.input_search = false;
-    this.ngOnInit();
-  }
-
-  openSearch() {
-    this.input_search = true;
-  }
-
-  like(item) {
   }
 
   favorito(item) {
