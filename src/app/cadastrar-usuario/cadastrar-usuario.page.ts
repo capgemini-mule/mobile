@@ -12,7 +12,7 @@ import { CadastroUsuario } from '../types/CadastroUsuario';
 })
 export class CadastrarUsuarioPage implements OnInit {
   
-  @ViewChild('accept', { static:false })  inputAccept: IonInput;
+  // @ViewChild('accept', { static:false })  inputAccept: IonInput;
   @ViewChild('nomeCompleto', { static:false })  inputNomeCompleto: IonInput;
   @ViewChild('username', { static:false })  inputUsername: IonInput;
 //  @ViewChild('cpf', { static:false })  inputCpf: IonInput;
@@ -81,9 +81,11 @@ export class CadastrarUsuarioPage implements OnInit {
     } else if(this.formCadastro.senha !== this.formCadastro.confirmarSenha) {
       this.inputConfirmPassword.setFocus();
       this.dialogService.showDialog("Senha", "", "A senha e a confirmação de senha não coincidem.");
-    } else if(this.formCadastro.accept === false) {  
-      this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
-    } else {
+    } 
+    // else if(this.formCadastro.accept === false) {  
+    //   this.dialogService.showDialog("Termos de Uso", "", "É necessário aceitar os termos de uso para prosseguir com o cadastro.");
+    // }
+    else {
       this.dialogService.showLoading("Efetuando cadastro, aguarde...");
       this.autenticacaoService.cadastrarUsuario(this.formCadastro, objNomeCompleto)
         .then( result => {
