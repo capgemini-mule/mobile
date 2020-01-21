@@ -1,13 +1,11 @@
 import { Usuario } from './../types/Usuario';
 import { Injectable } from '@angular/core';
-import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 import { DialogService } from './../services/ui/dialog.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { Orgao } from '../types/Orgao';
 import { ApiService } from './api.service';
 import { RequestInscricaoMatricula } from '../types/RequestInscricaoMatricula';
-import { resolve } from 'url';
 import { CadastroUsuario } from '../types/CadastroUsuario';
 
 @Injectable({
@@ -134,7 +132,7 @@ export class AutenticacaoService {
   }
 
   public goHomeAsRoot() {
-    this.navCtrl.navigateRoot('/tabs/tab1');
+    this.navCtrl.navigateRoot('/dashboard');
   }
 
   cadastrarUsuario(form: CadastroUsuario, obj: {nome: string, sobrenome: string}) {

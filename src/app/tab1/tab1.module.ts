@@ -18,22 +18,14 @@ export class Tab1PageModule {
 
   input_search : any;
 
-  constructor(){
+  constructor() {}
 
-    
-
-  }
-
-  setFilteredItems(value){
-
+  setFilteredItems(value) {
     console.log("value", value)
-
   }
 
   ngOnInit() {
-    this.input_search = "sasahusha"
+    this.input_search = "  "
     console.log("this.input_search", this.input_search)
   }
-
-
 }

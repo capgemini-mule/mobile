@@ -78,6 +78,7 @@ export class FormOrgaoPage implements OnInit {
       callback = () =>{ this.navCtrl.pop(); };
     } else {
       msg = "Órgão alterado com sucesso.";
+      callback = () =>{ this.navCtrl.pop(); };
     }
 
     this.dialogService.showDialog("", "", msg, null, callback);

@@ -87,8 +87,8 @@ export class CadastrarUsuarioPage implements OnInit {
       this.dialogService.showLoading("Efetuando cadastro, aguarde...");
       this.autenticacaoService.cadastrarUsuario(this.formCadastro, objNomeCompleto)
         .then( result => {
-              let retorno = result.json;
-              if(retorno.status === 200) {
+              // let retorno = result.json;
+              if(result.status === 200) {
                 this.dialogService.hideLoading(() => {
                   this.dialogService.showDialog("Cadastro", "", "Cadastro Efetuado com Sucesso.", [{text: 'OK', handler: () => {
                     this.autenticacaoService.goToLogin()

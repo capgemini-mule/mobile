@@ -44,6 +44,10 @@ const routes: Routes = [
   {
     path: 'form-orgao',
     loadChildren: () => import('./orgaos/form-orgao/form-orgao.module').then( m => m.FormOrgaoPageModule)
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   }
 
 ];
