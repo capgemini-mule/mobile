@@ -36,6 +36,7 @@ export class ApiService {
   readonly URL_LOGOUT: string = "http://login-cogel-v1.us-e2.cloudhub.io/api/logout"
   readonly URL_RESET_SENHA: string = "http://login-cogel-v1.us-e2.cloudhub.io/api/reset"
   readonly URL_PERFIL: string = "http://login-cogel-v1.us-e2.cloudhub.io/api/userinfo/{email}"
+  readonly URL_GRUPOS: string = "http://login-cogel-v1.us-e2.cloudhub.io/api/groups/{email}"
 
   //mais uma provisoria:
   // readonly URL_RESET_SENHA: string = "http://reset.us-e2.cloudhub.io/api/reset"

@@ -35,8 +35,28 @@ export class DashboardPage implements OnInit {
     this.dialogService.showLoading("Carregando lista de serviços, aguarde...");
     this.autenticacaoService.listarServicos()
         .then( result => {
-          this.lista_servicos = result.json;
-          this.dialogService.hideLoading();
+          let tempList = result.json;
+          this.autenticacaoService.listarGrupos().then(result => {
+            // grupos
+            this.lista_servicos = []
+            if (result && result.json.groups) {
+              const groupsString = JSON.stringify(result.json.groups)
+              // grupo A
+              if (groupsString.includes("CN=A")) {
+                this.lista_servicos.push(tempList[0])
+              }
+              // grupo B
+              if (groupsString.includes("CN=B")) {
+                this.lista_servicos.push(tempList[1])
+              }
+            }
+            this.dialogService.hideLoading();
+          }, err => {
+            console.log(this.dialogService.CONSOLE_TAG, err);
+            this.dialogService.hideLoading(() => {
+              this.dialogService.showDialog(this.dialogService.ERROR, "", err.mensagem);
+            });
+          })
       }, err => {
           console.log(this.dialogService.CONSOLE_TAG, err);
           this.dialogService.hideLoading(() => {

@@ -177,6 +177,17 @@ export class AutenticacaoService {
     }); 
   }
 
+  public listarGrupos() {
+    let emailEncoded = ""
+    if (AutenticacaoService.usuario) {
+      emailEncoded = AutenticacaoService.usuario.email
+    }
+    emailEncoded = encodeURIComponent(emailEncoded);
+    return this.apiService.request({
+      url: this.apiService.URL_GRUPOS.replace('{email}', emailEncoded)
+    });
+  }
+
   listarTiposIdentificacao() { 
     return this.apiService.request({
       url: this.apiService.URL_TIPOS_IDENTIFICACAO
